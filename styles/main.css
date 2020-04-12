@@ -1,0 +1,166 @@
+:root {
+/* theme color, font family */
+  --brand-font : 'Baloo Paaji 2', cursive; 
+  --brand-color: #ff971d;
+  --background-color: #f9f6f7;
+
+}
+
+body {
+  font-family: var(--brand-font);
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: 10%;
+}
+main {
+  height: 80%;
+  width: 100%;
+}
+footer, header {
+  height: 10%;
+  width: 100%;
+}
+#setting {
+  display: flex;
+}
+
+
+#game {
+  display: flex;
+  flex-direction: row;
+
+  width: 100%;
+  height: 80%;
+}
+
+#game-board-wrapper {
+  flex-grow: 4 1;
+
+  height: 500px;
+  width: 500px;
+
+  background-color: var(--background-color);
+  border: 1px solid var(--brand-color);
+}
+#game-board {
+  display: flex;
+  flex-wrap: wrap;
+
+  width: 100%;
+  height: 100%;
+}
+#score {
+  flex-grow: 4 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+#current-score, #highest-score {
+  flex-grow: 1 1
+}
+
+/* cell */
+#game-board div {
+  width: 10%;
+  height: 10%;
+
+  flex: 1 1 10%;
+
+  color: var(--brand-color);
+}
+
+/* pacman, start, move, die */
+.pac1-start {
+  background-image: url('../assets/pacStart.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+/* ghost, start, move, transform */
+.gh1-start {
+  background-image: url('../assets/ghOne.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.gh2-start {
+  background-image: url('../assets/ghTwo.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.gh3-start {
+  background-image: url('../assets/ghThree.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.gh4-start {
+  background-image: url('../assets/ghFour.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+/* food items */
+.food-one {
+  background-image: url('../assets/foodOne.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: 30%;
+  cursor: pointer;
+}
+.food-two {
+  background-image: url('../assets/foodTwo.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  cursor: pointer;
+}
+.food-special {
+  background-image: url('../assets/foodSp.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: 40%;
+  cursor: pointer;
+}
+
+/* add eating pac */
+.pac1-eat1 {
+  background-image: url('../assets/pacEatOne.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.pac1-eat2 {
+  background-image: url('../assets/pacEatTwo.png');
+  background-position: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.pac1-eat {
+  /* set animation using 1 2 */
+  background-image: radial-gradient('../assets/pacEatTwo.png');
+}

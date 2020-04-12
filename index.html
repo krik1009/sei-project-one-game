@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pacman Free Browser Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="scripts/app.js" charset="utf-8"></script>
+</head>
+<body>
+  <header><img src="#" alt="pacman-logo"></header>
+  
+  <main>
+    <div id="setting">
+      <div id="level">
+        <label for="level">Level</label>
+        <select name="level" id="level">
+          <!-- create an empty option here first -->
+          <option></option> 
+          <option value=1>1</option>
+          <option value=2>2</option>
+          <option value=3>3</option>
+          <option value=4>4</option>
+          <option value=5>5</option>
+        </select>
+      </div>
+      <div id="player"><button>2 Player Mode</button></div>
+      <div id="sound">
+        <img src="assets/playButton.png" alt="sound-play">
+        <img src="assets/soundOff.png" alt="sound-off">
+        <img src="assets/soundOn.png" alt="sound-on">
+      </div>
+    </div>
+
+    <div class="action" value="start"><button id="start">START</button></div>
+    
+    <div id="game">
+      <div id="game-board-wrapper">
+        <div id="game-board"></div>
+      </div>
+      <div id="score">
+        <div class="score">Current Score: <span id="current-score">0</span></div>
+        <div class="score">Higest Score: <span id="highest-score">0</span></div>  
+      </div>
+    </div>
+   
+    <div class="action" value="reset"><button id="reset">RESET</button></div>
+  </main>
+  <footer>Copyright xxx 2020</footer>
+  <audio value='start' src="assets/audio/start.mp3"></audio>
+</body>
+</html>

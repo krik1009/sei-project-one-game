@@ -159,21 +159,21 @@ button #mode {
 
 /* food items */
 .food1 {
-  background-image: url('../assets/foodOne.png');
+  background-image: url('../assets/food1.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 30%;
   cursor: pointer;
 }
 .food2 {
-  background-image: url('../assets/foodTwo.png');
+  background-image: url('../assets/food2.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 80%;
   cursor: pointer;
 }
 .foodsp {
-  background-image: url('../assets/foodSp.png');
+  background-image: url('../assets/foodsp.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 40%;
@@ -182,8 +182,13 @@ button #mode {
 
 /* eating pac */
 .pac1-eat {
-  /* set animation using 1 2 */
+  /* set animation using pic 1 and 2 */
   animation-name: 'pac1-eat';
+  /* background-image: url('../assets/pac1-open-mouse.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  cursor: pointer; */
   animation-duration: .5s;
 }
 @keyframes pac1-eat {

@@ -156,7 +156,13 @@ button #mode {
   background-size: contain;
   cursor: pointer;
 }
-
+.ghsp {
+  background-image: url('../assets/gh-high-score.png.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
 /* food items */
 .food1 {
   background-image: url('../assets/food1.png');

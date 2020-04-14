@@ -30,7 +30,7 @@ function init() {
 
   // pac, gh
   let pacOnePosition = foodOnePosition[ Math.floor( Math.random() * (foodOnePosition.length - 1 ))] //starting position for pac1
-  let ghPosition = [(height / 2 - 1) * width + (width / 2 - 1), (height / 2 - 1) * width + width / 2, (height / 2) * width + (width / 2 - 1), (height / 2) * width + width / 2]
+  const ghPosition = [(height / 2 - 1) * width + (width / 2 - 1), (height / 2 - 1) * width + width / 2, (height / 2) * width + (width / 2 - 1), (height / 2) * width + width / 2]
  
 
   // set route for pac and gh
@@ -80,6 +80,8 @@ function init() {
     cells[ghPosition[num]].classList.remove('food1', 'food2')
     cells[ghPosition[num]].classList.add(`gh${num}`)
   }
+  // turn on high score mode if pac eats food 2
+  const highScoreMode = Boolean(foodTwoPosition.forEach( item => item === pacOnePosition) && foodTwoPosition.forEach( item => cells[item].classList.includes('food2')))
 
   // f game reset (1. fullscore, 2. collision, 3. reset button ) 
   function resetGame() {
@@ -214,9 +216,11 @@ function init() {
 
           // cells[pacOnePosition].style = `transform: rotate(90 * (39 - ${event.keyCode}))`
           // ! activate high-score mode : change gh/ foodsp --
+          if (highScoreMode) {
+            setTimeout(foodSp(), 5000)   // food sp appears for 5 sec
+            cells[ghPosition[0]].classList.remove() // change gh
+          } 
         }
-       
-
       }
     } else {
       console.log('invalid input')

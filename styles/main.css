@@ -83,8 +83,8 @@ button #mode {
 
 /* cell */
 #game-board div {
-  width: 10%;
-  height: 10%;
+  width: calc(100% / width);
+  height: calc(100% / height);
 
   flex: 1 1 10%;
 
@@ -181,21 +181,26 @@ button #mode {
 }
 
 /* eating pac */
+/* --pac-style {
+  background-image: url('../assets/pac1-open-mouse.png');
+  background-position: center;
+} */
 .pac1-eat {
   /* set animation using pic 1 and 2 */
-  animation-name: 'pac1-eat';
-  /* background-image: url('../assets/pac1-open-mouse.png');
+  background-image: url('../assets/pac1-open-mouse.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;
-  cursor: pointer; */
-  animation-duration: .5s;
+  cursor: pointer;
+  transform: rotate(180deg);
+  /* animation-name: 'pac1-eat';
+  animation-duration: .5s; */
 }
-@keyframes pac1-eat {
+/* @keyframes pac1-eat {
   from {
     background-image: url('../assets/pac1.png');
   }
   to {
     background-image: url('../assets/pac1-open-mouse.png');
   }
-}
+} */

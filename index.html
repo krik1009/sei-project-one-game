@@ -9,7 +9,7 @@
   <script src="scripts/app.js" charset="utf-8"></script>
 </head>
 <body>
-  <header><img src="#" alt="pacman-logo"></header>
+  <header><img src='assets/pacman-logo.png' alt="pacman-logo" width="40%"></header>
   
   <main>
     <div id="setting">
@@ -25,15 +25,15 @@
           <option value=5>5</option>
         </select>
       </div>
-      <div id="player"><button>2 Player Mode</button></div>
+      <div id="player-mode"><button id="mode">2 Player Mode</button></div>
       <div id="sound">
-        <img src="assets/playButton.png" alt="sound-play">
-        <img src="assets/soundOff.png" alt="sound-off">
-        <img src="assets/soundOn.png" alt="sound-on">
+        <img src="assets/playButton.png" alt="sound-play" width="10%">
+        <img src="assets/soundOff.png" alt="sound-off" width="10%">
+        <img src="assets/soundOn.png" alt="sound-on" width="10%">
       </div>
     </div>
 
-    <div class="action" value="start"><button id="start" onclick=eatingPac()>START</button></div>
+    <!-- <div class="action" value="start"><button id="start" onclick=eatingPac()>START</button></div> -->
     
     <div id="game">
       <div id="game-board-wrapper">

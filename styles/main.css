@@ -1,8 +1,8 @@
 :root {
 /* theme color, font family */
   --brand-font : 'Baloo Paaji 2', cursive; 
-  --brand-color: #ff971d;
-  --background-color: #f9f6f7;
+  --brand-color: darkgrey;
+  --background-color: #222831;
 
 }
 
@@ -72,74 +72,74 @@ footer, header {
 
   flex: 1 1 10%;
 
-  color: var(--brand-color);
+  color: white;
+}
+
+/* route */
+.route {
+  background-color: #30475e;
+}
+.gh-starting {
+  background-color: var(--background-color);
 }
 
 /* pacman, start, move, die */
 .pac1-start {
   background-image: url('../assets/pacStart.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 
 /* ghost, start, move, transform */
-.gh1-start {
+.gh0 {
   background-image: url('../assets/ghOne.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.gh2-start {
+.gh1 {
   background-image: url('../assets/ghTwo.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.gh3-start {
+.gh2 {
   background-image: url('../assets/ghThree.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
-.gh4-start {
+.gh3 {
   background-image: url('../assets/ghFour.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 
 /* food items */
-.food-one {
+.food1 {
   background-image: url('../assets/foodOne.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: 30%;
   cursor: pointer;
 }
-.food-two {
+.food2 {
   background-image: url('../assets/foodTwo.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: 80%;
   cursor: pointer;
 }
-.food-special {
+.foodsp {
   background-image: url('../assets/foodSp.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: 40%;
   cursor: pointer;
@@ -149,14 +149,12 @@ footer, header {
 .pac1-eat1 {
   background-image: url('../assets/pacEatOne.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: contain;
 }
 .pac1-eat2 {
   background-image: url('../assets/pacEatTwo.png');
   background-position: center;
-  background-color: grey;
   background-repeat: no-repeat;
   background-size: contain;
 }

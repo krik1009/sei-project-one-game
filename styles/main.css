@@ -85,7 +85,7 @@ footer, header {
 
 /* pacman, start, move, die */
 .pac1-start {
-  background-image: url('../assets/pacStart.png');
+  background-image: url('../assets/pac1.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -94,28 +94,28 @@ footer, header {
 
 /* ghost, start, move, transform */
 .gh0 {
-  background-image: url('../assets/ghOne.png');
+  background-image: url('../assets/gh0.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 .gh1 {
-  background-image: url('../assets/ghTwo.png');
+  background-image: url('../assets/gh1.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 .gh2 {
-  background-image: url('../assets/ghThree.png');
+  background-image: url('../assets/gh2.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 .gh3 {
-  background-image: url('../assets/ghFour.png');
+  background-image: url('../assets/gh3.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -145,20 +145,17 @@ footer, header {
   cursor: pointer;
 }
 
-/* add eating pac */
-.pac1-eat1 {
-  background-image: url('../assets/pacEatOne.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.pac1-eat2 {
-  background-image: url('../assets/pacEatTwo.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
+/* eating pac */
 .pac1-eat {
   /* set animation using 1 2 */
-  background-image: radial-gradient('../assets/pacEatTwo.png');
+  animation-name: 'pac1-eat';
+  animation-duration: .5s;
+}
+@keyframes pac1-eat {
+  from {
+    background-image: url('../assets/pac1.png');
+  }
+  to {
+    background-image: url('../assets/pac1-open-mouse.png');
+  }
 }

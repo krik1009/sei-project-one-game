@@ -1,15 +1,12 @@
 function init() {
   // items
   const gameGrid = document.querySelector('#game-board')
-  const start = document.querySelector('#start')
 
   // grid and cell
   const cells = []
   const width = 10
   const height = 10
   const cellCount = width * height
-
-  // ! root
 
   // food items - food 1, 2, sp
   // ! calc food 1 position, use class Food?
@@ -117,35 +114,25 @@ function init() {
   function playGame(event) {
     // change pac face
     cells[pacOnePosition].classList.remove('pac1-start')
-    cells[pacOnePosition].classList.add('pac1-eat1')
+    cells[pacOnePosition].classList.add('pac1-eat')
 
-    const timer0 = setInterval( () => { moveGhRandom(0) }, 100)
-    const timer1 = setInterval( () => { moveGhRandom(1) }, 100)
-    const timer2 = setInterval( () => { moveGhRandom(2) }, 100)
-    const timer3 = setInterval( () => { moveGhRandom(3) }, 100)
-    if (Object.keys(keyCodePac).some( item => Number(item) === event.keyCode )) {  // ! timing  
-      clearInterval(timer0)
-      clearInterval(timer1)
-      clearInterval(timer2)
-      clearInterval(timer3)
-    }
     
-    // // move gh until arrow key is pressed
-    // const ghMove = setInterval( () => {
-    //   moveGhRandom(0)
-    //   moveGhRandom(1)
-    //   moveGhRandom(2)
-    //   moveGhRandom(3)
+    // move gh until arrow key is pressed
+    const ghMove = setInterval( () => {
+      moveGhRandom(0)
+      moveGhRandom(1)
+      moveGhRandom(2)
+      moveGhRandom(3)
       
-    //   if (Object.keys(keyCodePac).some( item => Number(item) === event.keyCode )) {  // ! timing  
-    //     clearInterval(ghMove)
-    //     return
-    //   } 
-    // }, 1000)
+      if (Object.keys(keyCodePac).some( item => Number(item) === event.keyCode )) {  // ! timing  
+        clearInterval(ghMove)
+        return
+      } 
+    }, 1000)
 
     // move pac and get food w arrow keys + update score 
     function foodScore(num) { // num = 1, 2, sp
-      if (cells[pacOnePosition].classList.includes(`food${num}`)) {
+      if (cells[pacOnePosition].classList.value.includes(`food${num}`)) {
         // remove foods
         cells[pacOnePosition].classList.remove(`food${num}`) 
         // add score
@@ -156,11 +143,11 @@ function init() {
     //! rotate pac?, error -skip 2 cells at the same time btwn food 1 and 2
     if (Object.keys(keyCodePac).some( item => Number(item) === event.keyCode )) {
       if (foodArray.includes(pacOnePosition + keyCodePac[event.keyCode])) {
-        cells[pacOnePosition].classList.remove('pac1-eat1')
+        cells[pacOnePosition].classList.remove('pac1-eat')
         pacOnePosition = pacOnePosition + keyCodePac[event.keyCode] // move pac
         foodScore(1)
         foodScore(2)
-        cells[pacOnePosition].classList.add('pac1-eat1')
+        cells[pacOnePosition].classList.add('pac1-eat')
         // ! activate high-score mode : change gh/ foodsp --
 
       }
@@ -180,8 +167,6 @@ function init() {
     ghPacEsc(1)
     ghPacEsc(2)
     ghPacEsc(3)
-
-
 
  
     // game over 1. full score, 2. eaten

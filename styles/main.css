@@ -192,7 +192,7 @@ button #mode {
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
-  transform: rotate(180deg);
+  /* transform: rotate(180deg); */
   /* animation-name: 'pac1-eat';
   animation-duration: .5s; */
 }

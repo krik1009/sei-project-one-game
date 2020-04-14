@@ -170,12 +170,16 @@ function init() {
       moveGhRandom(1)
       moveGhRandom(2)
       moveGhRandom(3)
-
-      if (currentScore > fullScore || ghPosition.some( item => item === pacOnePosition )) {
+      
+      if (currentScore > fullScore 
+        || ghPosition[0] === (height / 2 - 1) * width + (width / 2 - 1)
+        || ghPosition[1] === (height / 2 - 1) * width + width / 2
+        || ghPosition[2] === (height / 2) * width + (width / 2 - 1)
+        || ghPosition[3] === (height / 2) * width + width / 2 ) {
         clearInterval(ghMove)
         return
       }
-    }, 500 ) //change gh speed based on level
+    }, 300) //change gh speed based on level
   }
   start.addEventListener('click', startGame)
 

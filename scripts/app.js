@@ -1,6 +1,7 @@
 function init() {
   // items
   const gameGrid = document.querySelector('#game-board')
+  const reset = document.querySelector('#reset')
 
   // grid and cell
   const cells = []
@@ -198,8 +199,12 @@ function init() {
 
 
   // * 7. game reset
-  const reset = document.querySelector('#reset')
   function resetGame() {
+    cells[ghPosition[0]].classList.remove('gh0')
+    cells[ghPosition[1]].classList.remove('gh1')
+    cells[ghPosition[2]].classList.remove('gh2')
+    cells[ghPosition[3]].classList.remove('gh3')
+
     // gh return to the initial place
     ghPosition[0] = (height / 2 - 1) * width + (width / 2 - 1)
     ghPosition[1] = (height / 2 - 1) * width + width / 2
@@ -207,9 +212,24 @@ function init() {
     ghPosition[3] = (height / 2) * width + width / 2
 
     cells[ghPosition[0]].classList.add('gh0')
-    cells[ghPosition[0]].classList.add('gh1')
-    cells[ghPosition[0]].classList.add('gh2')
-    cells[ghPosition[0]].classList.add('gh3')
+    cells[ghPosition[1]].classList.add('gh1')
+    cells[ghPosition[2]].classList.add('gh2')
+    cells[ghPosition[3]].classList.add('gh3')
+
+    cells[pacOnePosition].classList.remove('pac1-eat')
+    pacOnePosition = foodOnePosition[ Math.floor( Math.random() * (foodOnePosition.length - 1 ))] 
+    cells[pacOnePosition].classList.add('pac1-start')
+
+    // add food1 2 
+    for (let j = 0; j <= foodOnePosition.length - 1; j++) {
+      cells[foodOnePosition[j]].classList.add('food1')
+      if (foodOnePosition[j] === pacOnePosition) {
+        cells[foodOnePosition[j]].classList.remove('food1') // remove food 1 in cell w pac
+      }
+    }
+    for (let k = 0; k <= foodTwoPosition.length - 1; k++) {
+      cells[foodTwoPosition[k]].classList.add('food2')
+    }
     
     // update score record, reset current score
     scoreRecord.push(currentScore.textContent)

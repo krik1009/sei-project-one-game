@@ -14,14 +14,14 @@ body {
   justify-content: center;
   align-items: center;
 
-  margin: 10%;
+  margin: 5%;
 }
 main {
   height: 80%;
   width: 80%;
 }
 footer, header {
-  font-size: 10px;
+  font-size: 15px;
   color: gray;
   text-align: center;
   height: 10%;
@@ -47,17 +47,17 @@ button #mode {
 #game {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 
   width: 100%;
   height: 80%;
 }
 
 #game-board-wrapper {
-  flex-grow: 4 1;
+  flex-grow: 3 1;
 
-  height: 600px;
-  width: 600px;
+  height: 500px;
+  width: 500px;
 
   background-color: var(--background-color);
   border: 1px solid var(--brand-color);
@@ -70,7 +70,7 @@ button #mode {
   height: 100%;
 }
 #score {
-  flex-grow: 4 1;
+  flex-grow: 3 1;
 
   display: flex;
   flex-direction: column;

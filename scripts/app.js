@@ -201,7 +201,15 @@ function init() {
   const reset = document.querySelector('#reset')
   function resetGame() {
     // gh return to the initial place
-    ghPosition = [(height / 2 - 1) * width + (width / 2 - 1), (height / 2 - 1) * width + width / 2, (height / 2) * width + (width / 2 - 1), (height / 2) * width + width / 2]
+    ghPosition[0] = (height / 2 - 1) * width + (width / 2 - 1)
+    ghPosition[1] = (height / 2 - 1) * width + width / 2
+    ghPosition[2] = (height / 2) * width + (width / 2 - 1)
+    ghPosition[3] = (height / 2) * width + width / 2
+
+    cells[ghPosition[0]].classList.add('gh0')
+    cells[ghPosition[0]].classList.add('gh1')
+    cells[ghPosition[0]].classList.add('gh2')
+    cells[ghPosition[0]].classList.add('gh3')
     
     // update score record, reset current score
     scoreRecord.push(currentScore.textContent)

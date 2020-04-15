@@ -1,9 +1,8 @@
 function init() {
-  // items
-  
+  // dom elements
   const gameGrid = document.querySelector('#game-board')
-  const reset = document.querySelector('#reset')
   const start = document.querySelector('#start')
+  const reset = document.querySelector('#reset')
   const options = document.querySelectorAll('option')
 
   // grid and cell
@@ -12,30 +11,33 @@ function init() {
   const height = 10
   const cellCount = width * height
 
-  // food items - food 1, 2, sp
+  // food 1 2 sp
   // ! calc food 1 position
-  const foodOnePosition = [1, 2, 3, 6, 7, 8, 91, 92, 93, 96, 97, 98, 10, 13, 16, 19, 20, 23, 26, 29, 70, 73, 76, 79, 80, 83, 86, 89, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 41, 43, 46, 48, 51, 53, 56, 58]
+  const foodOnePosition = [1, 2, 3, 6, 7, 8, 91, 92, 93, 96, 97, 98, 
+    10, 13, 16, 19, 20, 23, 26, 29, 70, 73, 76, 79, 
+    80, 83, 86, 89, 30, 
+    31, 32, 33, 34, 35, 36, 37, 38, 39, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 
+    41, 43, 46, 48, 51, 53, 56, 58]
   const foodTwoPosition = [0, width - 1, width * (height - 1), width * height - 1]
   const foodSpPosition = []
-  const foodArray = foodOnePosition.concat(foodTwoPosition).concat(foodSpPosition)
-  function foodSp() {
-    // add foodSpPosition
-    foodSpPosition.push(foodOnePosition[Math.floor(Math.random() * (foodOnePosition.length - 1))])
-    // remove the sp from foodOnePosition
-    foodOnePosition.filter( item => item !== foodSpPosition[0])
-    // change style
-    cells[foodSpPosition[0]].classList.remove('food1')
-    cells[foodSpPosition[0]].classList.add('foodsp')
-  } // activate in high-score mode
-  const foodEaten = []
+  foodSpPosition.push(foodOnePosition[Math.floor(Math.random() * (foodOnePosition.length - 1))])
+  let foodEaten = []
+  const foodArray = foodOnePosition.concat(foodTwoPosition)
+  
+  // route
+  const routePacGh = foodArray
 
-  // pac, gh
+  // pac, ghosts
   let pacOnePosition = foodOnePosition[ Math.floor( Math.random() * (foodOnePosition.length - 1 ))] //starting position for pac1
-  const ghPosition = [(height / 2 - 1) * width + (width / 2 - 1), (height / 2 - 1) * width + width / 2, (height / 2) * width + (width / 2 - 1), (height / 2) * width + width / 2]
- 
+  const ghPositionInitial = [(height / 2 - 1) * width + (width / 2 - 1), 
+    (height / 2 - 1) * width + width / 2, 
+    (height / 2) * width + (width / 2 - 1), 
+    (height / 2) * width + width / 2]
 
-  // set route for pac and gh
-  const routePacGh = foodArray 
+  const ghPosition = [(height / 2 - 1) * width + (width / 2 - 1), 
+    (height / 2 - 1) * width + width / 2, 
+    (height / 2) * width + (width / 2 - 1), 
+    (height / 2) * width + width / 2] // update constantly
 
   // f set boundary for gh/pac - move if true
   function setBoundary(id, direction) {  
@@ -55,16 +57,41 @@ function init() {
   const highScore = document.querySelector('#highest-score')
   const scoreRecord = [0]
   const scoreTable = { 'food1': 1, 'food2': 5, 'foodsp': 10 }
-  const fullScore = parseInt(foodOnePosition.length * scoreTable['food1'] + foodTwoPosition.length * scoreTable['food2'] + foodSpPosition.length * scoreTable['foodsp'])
+  // const fullScore = parseInt((foodOnePosition.length * scoreTable['food1'] 
+  // + foodTwoPosition.length * scoreTable['food2'] 
+  // + foodSpPosition.length * (scoreTable['foodsp'] - scoreTable['food1']))) // deduct food1 score
+
+  
+  // f move pac and get food, update score
+  let highScoreMode = false
+  function foodScore(num) { // num = 1, 2, sp
+    if (cells[pacOnePosition].classList.value.includes(`food${num}`)) {
+      // remove foods
+      cells[pacOnePosition].classList.remove(`food${num}`)
+      // turn on high score mode
+      if (num === 2) highScoreMode = true
+      // push the food to eaten array
+      foodEaten.push(pacOnePosition)
+      // add score
+      currentScore.textContent = parseInt(currentScore.textContent) + parseInt(scoreTable[`food${num}`])
+    }
+  }
+  function wait(ms) {
+    const startTime = new Date().getTime()
+    let endTime = startTime
+    while (endTime < startTime + ms) {
+      endTime = new Date().getTime()
+    }
+  }
 
   // def movement
   const keyCodePac = { 39: +1, 37: -1, 38: -height, 40: +height } // keyCode - pacPosition
   const ghDirection = [+1, -1, +width, -width] // feasible direction
-  const distance = [+3, -3, +3 * width, 3 * -width] // social distancing
+  const distance = [+3, -3, +3 * width, 3 * -width] // social distancing //! level
 
   // f move gh randomly
   function moveGhRandom(num) { // num = 0, 1, 2, 3
-    cells[ghPosition[num]].classList.remove(`gh${num}`)
+    cells[ghPosition[num]].classList.remove(`gh${num}`, 'ghsp')
 
     if (foodEaten.every( item => item !== ghPosition[num])) { // not display eaten food
       if (foodOnePosition.some( item => item === ghPosition[num])) { cells[ghPosition[num]].classList.add('food1')}
@@ -82,56 +109,22 @@ function init() {
         newPositionArray.push(ghDirection[i])
       }
     }
-    console.log(newPositionArray)
+
     ghPosition[num] += newPositionArray[Math.round(Math.random() * (newPositionArray.length - 1))]
 
     cells[ghPosition[num]].classList.remove('food1', 'food2', 'foodsp')
     cells[ghPosition[num]].classList.add(`gh${num}`)
-  }
 
-  // turn on high score mode if pac eats food 2
-  const highScoreMode = Boolean(foodTwoPosition.forEach( item => item === pacOnePosition) && foodTwoPosition.forEach( item => cells[item].classList.contains('food2')))
-
-  // f game reset (1. fullscore, 2. collision, 3. reset button ) 
-  function resetGame() {
-    cells[ghPosition[0]].classList.remove('gh0')
-    cells[ghPosition[1]].classList.remove('gh1')
-    cells[ghPosition[2]].classList.remove('gh2')
-    cells[ghPosition[3]].classList.remove('gh3')
-
-    // gh return to the initial cell
-    ghPosition[0] = (height / 2 - 1) * width + (width / 2 - 1)
-    ghPosition[1] = (height / 2 - 1) * width + width / 2
-    ghPosition[2] = (height / 2) * width + (width / 2 - 1)
-    ghPosition[3] = (height / 2) * width + width / 2
-
-    cells[ghPosition[0]].classList.add('gh0')
-    cells[ghPosition[1]].classList.add('gh1')
-    cells[ghPosition[2]].classList.add('gh2')
-    cells[ghPosition[3]].classList.add('gh3')
-
-    // pac return initial place, change face
-    cells[pacOnePosition].classList.remove('pac1-eat')
-    pacOnePosition = foodOnePosition[ Math.floor( Math.random() * (foodOnePosition.length - 1 ))] 
-    cells[pacOnePosition].classList.add('pac1-start')
-
-    // food return
-    for (let j = 0; j <= foodOnePosition.length - 1; j++) {
-      cells[foodOnePosition[j]].classList.add('food1')
-      if (foodOnePosition[j] === pacOnePosition) {
-        cells[foodOnePosition[j]].classList.remove('food1') // remove food 1 in cell w pac
-      }
+    if (highScoreMode) {
+      cells[ghPosition[num]].classList.replace(`gh${num}`, 'ghsp')
     }
-    for (let k = 0; k <= foodTwoPosition.length - 1; k++) {
-      cells[foodTwoPosition[k]].classList.add('food2')
-    }
-    
-    // reset current score, update score record
-    scoreRecord.push(parseInt(currentScore.textContent))
-    highScore.textContent = Math.max(...scoreRecord) 
-    currentScore.textContent = 0
   }
+  const level = 1000 - options.forEach( item => Object.keys(options)[item] * 100) 
+  
 
+  
+
+  // *************
   // * 1. create grid + starting positions of pac, gh1-4 and food 1, 2
   function createGrid(pac, gh, foodOne, foodTwo) {
     for (let i = 0; i <= cellCount - 1; i++) {
@@ -174,95 +167,164 @@ function init() {
 
   // * 2. start game, move gh
   function startGame() {
-    // ! call level value Object.keys(opstions) call array with 
-    const interval = 1000 - options.forEach( item => Object.keys(options)[item] * 100) 
-    const ghMove = setInterval( () => {
-      moveGhRandom(0)
-      moveGhRandom(1)
-      moveGhRandom(2)
-      moveGhRandom(3)
+    cells[pacOnePosition].classList.remove('ghsp')
+    highScoreMode = false
 
-      if (currentScore > fullScore 
-        || ghPosition[0] === (height / 2 - 1) * width + (width / 2 - 1)
-        || ghPosition[1] === (height / 2 - 1) * width + width / 2
-        || ghPosition[2] === (height / 2) * width + (width / 2 - 1)
-        || ghPosition[3] === (height / 2) * width + width / 2 ){
-        clearInterval(ghMove)
-        return
+    // ! level 
+    const gh0Move = setInterval( () => { moveGhRandom(0) }, 1000)
+    const gh1Move = setInterval( () => { moveGhRandom(1) }, 1000)
+    const gh2Move = setInterval( () => { moveGhRandom(2) }, 1000)
+    const gh3Move = setInterval( () => { moveGhRandom(3) }, 1000)
+
+    // if (setBoundary( pacOnePosition, 1)){
+    //   cells[pacOnePosition].classList.remove('pac1-eat')
+    //   pacOnePosition += 1
+    //   cells[pacOnePosition].classList.add('pac1-eat')
+    // }
+
+    // * 3. reset game
+    // f game reset (activate when 1. fullscore, 2. collision, 3. reset button ) 
+    function resetGame() {
+      // gh returns to initial cell
+      for (let i = 0; i <= ghPosition.length - 1; i++) {
+        cells[ghPosition[i]].classList.remove(`gh${i}`)
+        ghPosition[i] = ghPositionInitial[i]
+        cells[ghPosition[i]].classList.add(`gh${i}`)
       }
-    }, 1000) //! change gh speed based on level, return dont work?
+
+      // pac return to initial place w serious face
+      cells[pacOnePosition].classList.remove('pac1-eat', 'pac1-highscore')
+      pacOnePosition = foodOnePosition[ Math.floor( Math.random() * (foodOnePosition.length - 1 ))] 
+      cells[pacOnePosition].classList.add('pac1-start')
+
+      // food return
+      for (let j = 0; j <= foodOnePosition.length - 1; j++) {
+        cells[foodOnePosition[j]].classList.add('food1')
+      }
+      for (let k = 0; k <= foodTwoPosition.length - 1; k++) {
+        cells[foodTwoPosition[k]].classList.add('food2')
+      }
+      for (let i = 0; i <= foodSpPosition.length - 1; i++) {
+        cells[foodSpPosition[i]].classList.replace('foodsp', 'food1')
+      }
+      foodOnePosition.concat(foodSpPosition)
+      // empty food eaten
+      foodEaten = []
+
+      // display pac1
+      cells[pacOnePosition].classList.remove('food1', 'food2', 'foodsp', 'ghsp') 
+      cells[pacOnePosition].classList.add('pac1-starting')
+      routePacGh.forEach( item => cells[item].classList.remove('ghsp'))
+
+      // reset current score, update score record
+      scoreRecord.push(parseInt(currentScore.textContent))
+      highScore.textContent = Math.max(...scoreRecord) 
+      currentScore.textContent = 0
+
+      routePacGh.forEach( item => cells[item].classList.replace('route-highscore', 'route') )
+
+      clearInterval(gh0Move)
+      clearInterval(gh1Move)
+      clearInterval(gh2Move)
+      clearInterval(gh3Move)
+      return
+    }
+    reset.addEventListener('click',resetGame)
+
+    // * 2.  move pac -> score
+    function playGame(event) {
+      // change pac face
+      cells[pacOnePosition].classList.remove('pac1-start','pac1-highscore', 'ghsp')
+      cells[pacOnePosition].classList.replace('pac1-start','pac1-eat')
+
+      // add score
+      if (Object.keys(keyCodePac).some( item => Number(item) === event.keyCode )) {
+        if (foodArray.includes(pacOnePosition + keyCodePac[event.keyCode])) {
+          if (setBoundary(pacOnePosition, keyCodePac[event.keyCode])) {
+            cells[pacOnePosition].classList.remove('pac1-eat')
+            pacOnePosition = pacOnePosition + keyCodePac[event.keyCode] // move pac
+            foodScore(1)
+            foodScore(2)
+            cells[pacOnePosition].classList.add('pac1-eat')
+            //! rotate pac, animate pac js
+            // cells[pacOnePosition].style.transform = `rotate((${event.keyCode} - 39) * 90)deg))`
+            // cells[pacOnePosition].style = `transform: rotate(90 * (39 - ${event.keyCode}))`
+            
+
+            // activate highscore mode for 5 sec
+            console.log(highScoreMode)
+
+            // activate high score mode for 5 sec
+            if (highScoreMode) {
+              // food sp appear
+              cells[foodSpPosition[0]].classList.replace('food1', 'foodsp')
+    
+              // change gh face
+              for (let i = 0; i <= ghPosition.length - 1; i++) {
+                cells[ghPosition[i]].classList.replace(`gh${i}`, 'ghsp')
+              }
+  
+              // change pac face
+              cells[pacOnePosition].classList.replace('pac1-eat', 'pac1-highscore')
+  
+              // when pac eat gh, gh go back to the initial position
+              for (let i = 0; i <= ghPosition.length - 1; i++) {
+                if (ghPosition[i] === pacOnePosition) {
+                  cells[ghPosition[i]].classList.remove('ghsp')
+                  ghPosition[i] = ghPositionInitial[i]
+                  cells[ghPositionInitial[i]].classList.add(`gh${i}`)
+                  clearInterval(`gh${i}Move`)
+                  return
+                }
+              }
+  
+              // if pac eats sp add score
+              foodScore('sp')
+  
+              // change route color
+              routePacGh.forEach( item => cells[item].classList.replace('route', 'route-highscore') )
+              
+              // deactivate high-score mode
+              // wait(5000)
+              // highScoreMode = false
+              // return
+            }
+          }
+        }
+      } else console.log('invalid input')
+
+      // game over 1. full score, 2. eaten
+      if (foodEaten.length === foodArray.length) {
+        window.alert('You WIN!!!')
+        const tryAgain = window.confirm('Try again?')
+        if (tryAgain) {
+          resetGame()
+          setTimeout( startGame(), 5000 )
+        } else { 
+          // location.reload() // ! avoid score reset?
+          resetGame()
+        } 
+      }
+      if (ghPosition.some( item => item === pacOnePosition )) {
+        window.alert('You Lose...')
+        const tryAgain = window.confirm('Try again?')
+        if (tryAgain) {
+          resetGame()
+          setTimeout( () => { startGame() }, 5000 )
+        } else { 
+          // location.reload() // ! avoid score reset?
+          resetGame()
+        } 
+      }
+    }
+    document.addEventListener('keyup', playGame)
   }
+
   start.addEventListener('click', startGame)
 
 
-  // * 3. move pac w arrow keys -> score
-  function playGame(event) {
-    // change pac face
-    cells[pacOnePosition].classList.remove('pac1-start')
-    cells[pacOnePosition].classList.add('pac1-eat')
-
-    // move pac and get food w arrow keys + update score 
-    function foodScore(num) { // num = 1, 2, sp
-      if (cells[pacOnePosition].classList.value.includes(`food${num}`)) {
-        // remove foods
-        cells[pacOnePosition].classList.remove(`food${num}`) 
-        // push the food to eaten array
-        foodEaten.push(pacOnePosition)
-        console.log(foodEaten)
-        // add score
-        currentScore.textContent = parseInt(currentScore.textContent) + parseInt(scoreTable[`food${num}`])
-      }
-    }
-
-    //! rotate pac, animate pac js
-    if (Object.keys(keyCodePac).some( item => Number(item) === event.keyCode )) {
-      if (foodArray.includes(pacOnePosition + keyCodePac[event.keyCode])) {
-        if (setBoundary(pacOnePosition, keyCodePac[event.keyCode])) {
-          cells[pacOnePosition].classList.remove('pac1-eat')
-          pacOnePosition = pacOnePosition + keyCodePac[event.keyCode] // move pac
-          foodScore(1)
-          foodScore(2)
-          cells[pacOnePosition].classList.add('pac1-eat')
-          // cells[pacOnePosition].style.transform = `rotate((${event.keyCode} - 39) * 90)deg))`
-
-          // cells[pacOnePosition].style = `transform: rotate(90 * (39 - ${event.keyCode}))`
-          // ! activate high-score mode : change gh/ foodsp --
-          if (highScoreMode) {
-            setTimeout(foodSp(), 5000)   // food sp appears for 5 sec
-            cells[ghPosition[0]].classList.remove() // change gh
-          } 
-        }
-      }
-    } else {
-      console.log('invalid input')
-    }
-
-    // game over 1. full score, 2. eaten
-    if (currentScore.textContent > fullScore) {
-      window.alert('You WIN!!!')
-      // update score record, reset current score
-      resetGame()
-      return
-    }
-    if (ghPosition.some( item => item === pacOnePosition )) {
-      window.alert('You Lose...')
-      const tryAgain = window.confirm('Try again?')
-      if (tryAgain) {
-        resetGame()
-        return
-      } else { 
-        location.reload() // ! avoid score reset
-      } 
-    }
-  }
   
-  document.addEventListener('keyup', playGame)
   
-  // * 3. reset game
-  reset.addEventListener('click', resetGame)
-
-
-
   // * 9. level option
   // * 10. 2 player mode 
   // * 11. background music (w mute, unmute)

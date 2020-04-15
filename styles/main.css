@@ -157,7 +157,7 @@ button #mode {
   cursor: pointer;
 }
 .ghsp {
-  background-image: url('../assets/gh-high-score.png.png');
+  background-image: url('../assets/gh-high-score.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -210,3 +210,13 @@ button #mode {
     background-image: url('../assets/pac1-open-mouse.png');
   }
 } */
+.pac1-highscore {
+  background-image: url('../assets/pachighscore.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  cursor: pointer;
+}
+.route-highscore {
+  background-color: orange;
+}

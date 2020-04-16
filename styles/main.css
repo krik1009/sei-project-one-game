@@ -198,6 +198,7 @@ button #mode {
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
+  /* animation: pac1-eat .3s linear 1s infinite alternate; */
   /* transform: rotate(180deg); */
   /* animation-name: 'pac1-eat';
   animation-duration: .5s; */
@@ -211,12 +212,32 @@ button #mode {
   }
 } */
 .pac1-highscore {
-  background-image: url('../assets/pachighscore.png');
+  /* background-image: url('../assets/pachighscore.png'); */
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100%;
   cursor: pointer;
+  /* animation: pac1-highscore .3s linear 1s infinite alternate; */
 }
 .route-highscore {
   background-color: orange;
 }
+
+.one-player {
+  animation: fadeInLeft 1s 1 0s ease;
+}
+/* @keyframes pac1-eat {
+  from {
+    background-image: url('../assets/pac1.png');
+  }
+  to {
+    background-image: url('../assets/pac1-open-mouse.png');
+  }
+}
+@keyframes pac1-highscore {
+  from {
+    background-image: url('../assets/pac1-open-mouse.png');
+  }
+  to {
+    background-image: url('../assets/pachighscore.png');
+  }
+} */

@@ -175,7 +175,9 @@ function init() {
     const gh1Move = setInterval( () => { moveGhRandom(1) }, 1000)
     const gh2Move = setInterval( () => { moveGhRandom(2) }, 1000)
     const gh3Move = setInterval( () => { moveGhRandom(3) }, 1000)
-
+    const pacAnimation = setInterval( () => {
+      cells[pacOnePosition].classList.replace('pac1-eat', 'pac1-start')
+    }, 1000)
     // if (setBoundary( pacOnePosition, 1)){
     //   cells[pacOnePosition].classList.remove('pac1-eat')
     //   pacOnePosition += 1
@@ -199,6 +201,7 @@ function init() {
 
       // food return
       for (let j = 0; j <= foodOnePosition.length - 1; j++) {
+        cells[foodOnePosition[j]].classList.remove('foodsp')
         cells[foodOnePosition[j]].classList.add('food1')
       }
       for (let k = 0; k <= foodTwoPosition.length - 1; k++) {
@@ -227,7 +230,8 @@ function init() {
       clearInterval(gh1Move)
       clearInterval(gh2Move)
       clearInterval(gh3Move)
-      return
+      clearInterval(pacAnimation)
+      clearInterval(pacHighScoreAnimation)
     }
     reset.addEventListener('click',resetGame)
 
@@ -242,7 +246,11 @@ function init() {
         if (foodArray.includes(pacOnePosition + keyCodePac[event.keyCode])) {
           if (setBoundary(pacOnePosition, keyCodePac[event.keyCode])) {
             cells[pacOnePosition].classList.remove('pac1-eat')
-            pacOnePosition = pacOnePosition + keyCodePac[event.keyCode] // move pac
+            console.log(pacOnePosition)
+            pacOnePosition += keyCodePac[event.keyCode] // move pac
+            console.log(pacOnePosition)
+            console.log(keyCodePac[event.keyCode])
+            console.log(keyCodePac)
             foodScore(1)
             foodScore(2)
             cells[pacOnePosition].classList.add('pac1-eat')
@@ -251,8 +259,6 @@ function init() {
             // cells[pacOnePosition].style = `transform: rotate(90 * (39 - ${event.keyCode}))`
             
 
-            // activate highscore mode for 5 sec
-            console.log(highScoreMode)
 
             // activate high score mode for 5 sec
             if (highScoreMode) {
@@ -265,7 +271,11 @@ function init() {
               }
   
               // change pac face
-              cells[pacOnePosition].classList.replace('pac1-eat', 'pac1-highscore')
+              const pacHighScoreAnimation = setInterval( () => {
+                cells[pacOnePosition].classList.replace('pac1-start', 'pac1-highscore')
+              }, 1000)
+              
+              // cells[pacOnePosition].classList.replace('pac1-eat', 'pac1-highsc
   
               // when pac eat gh, gh go back to the initial position
               for (let i = 0; i <= ghPosition.length - 1; i++) {
@@ -283,13 +293,13 @@ function init() {
   
               // change route color
               routePacGh.forEach( item => cells[item].classList.replace('route', 'route-highscore') )
-              
+            }
               // deactivate high-score mode
               // wait(5000)
               // highScoreMode = false
               // return
-            }
           }
+        
         }
       } else console.log('invalid input')
 
@@ -299,27 +309,28 @@ function init() {
         const tryAgain = window.confirm('Try again?')
         if (tryAgain) {
           resetGame()
-          setTimeout( startGame(), 5000 )
-        } else { 
-          // location.reload() // ! avoid score reset?
+          startGame()
+        } else {
           resetGame()
-        } 
+          setTimeout( startGame(), 5000 )
+        }
       }
+      
       if (ghPosition.some( item => item === pacOnePosition )) {
         window.alert('You Lose...')
         const tryAgain = window.confirm('Try again?')
         if (tryAgain) {
           resetGame()
-          setTimeout( () => { startGame() }, 5000 )
-        } else { 
-          // location.reload() // ! avoid score reset?
+          startGame()
+        } else {
           resetGame()
-        } 
+          setTimeout( startGame(), 5000 )
+        }
       }
     }
-    document.addEventListener('keyup', playGame)
-  }
+    document.addEventListener('keydown', playGame)
 
+  }
   start.addEventListener('click', startGame)
 
 

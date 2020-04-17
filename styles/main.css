@@ -1,22 +1,18 @@
-:root {
-/* theme color, font family */
-  --brand-font : 'Baloo Paaji 2', cursive; 
-  --brand-color: darkgrey;
-  --background-color: #222831;
-
-}
-
 body {
-  font-family: var(--brand-font);
+  font-family: 'Baloo Paaji 2', cursive; 
   
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
+
   margin: 5%;
 }
 main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 80%;
   width: 80%;
 }
@@ -26,11 +22,12 @@ footer, header {
   text-align: center;
   height: 10%;
   width: 100%;
+
+  margin: 20px;
 }
-#setting {
+/* #setting {
   display: flex;
   justify-content: space-between;
-
   height: 20%;
 }
 button #mode {
@@ -42,25 +39,27 @@ button #mode {
 
   display: flex;
   align-items: center;
-}
+} */
 
 #game {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
 
   width: 100%;
   height: 80%;
 }
 
 #game-board-wrapper {
-  flex-grow: 3 1;
-
   height: 500px;
   width: 500px;
 
-  background-color: var(--background-color);
-  border: 1px solid var(--brand-color);
+  margin: 10px;
+
+  background-color: rgb(46, 46, 46);
+  border: 2px solid rgb(46, 46, 46);
+
+  outline: white;
 }
 #game-board {
   display: flex;
@@ -69,53 +68,68 @@ button #mode {
   width: 100%;
   height: 100%;
 }
-#score {
-  flex-grow: 3 1;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-}
-#current-score, #highest-score {
-  flex-grow: 1 1
-}
-
 /* cell */
 #game-board div {
   width: calc(100% / width);
   height: calc(100% / height);
 
   flex: 1 1 10%;
-
-  color: white;
 }
+/* ex-game */
+#ex-game {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
+  width: 60%;
+  height: 30%;
+}
 .action {
   display: flex;
-  justify-content: flex-end;
-
-  margin: 10px 0;
+  justify-content: flex-start;
+  /* margin: 20px 20px 20px 10%; */
 }
-#reset {
-  font-family: var(--brand-font);
-  font-size: 20px;
-  text-align: center;
+
+button#start, button#reset {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+
+  font-family: 'Baloo Paaji 2', cursive; 
+  font-size: 16px;
+  font-weight: 900;
   color: white;
-
-  background-color: darkred;
-  padding: 5px 20px;
-  border-radius: 30px;
-  
+  width: 100px;
+  padding: 5px 0;
+  border: 2px solid black;
+  border-radius: 10px;
+  background:  rgb(46, 46, 46);
+  cursor: pointer;
+}
+.action button #start a:active {
+  box-shadow: inset 2px 2px 4px 0 #ccc;
+  color: #666;
 }
 
+.score-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.score {
+  /* padding: 10px; */
+  text-align: center;
+}
+#current-score, #highest-score {
+  font-weight: 800;
+}
 
 /* route */
 .route {
-  background-color: #30475e;
+  background-color: #dbdbdb;
 }
 .gh-starting {
-  background-color: var(--background-color);
+  background-color: rgb(46, 46, 46);
 }
 
 /* pacman, start, move, die */
@@ -168,14 +182,14 @@ button #mode {
   background-image: url('../assets/food1.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 30%;
+  background-size: 20%;
   cursor: pointer;
 }
 .food2 {
   background-image: url('../assets/food2.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 80%;
+  background-size: 40%;
   cursor: pointer;
 }
 .foodsp {
@@ -212,7 +226,7 @@ button #mode {
   }
 } */
 .pac1-highscore {
-  /* background-image: url('../assets/pachighscore.png'); */
+  background-image: url('../assets/pachighscore.png');
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
@@ -241,3 +255,54 @@ button #mode {
     background-image: url('../assets/pachighscore.png');
   }
 } */
+
+.dig-container {
+  position: absolute;
+  left:50%;
+  transform: translateX(-50%) translateY(-50%);
+  padding: 10px;
+  border: 2px solid #ddd;
+  box-shadow: 1px 1px 5px 1px #ccc;
+  opacity: 1;
+  border-radius: 10px;
+  transition: all .3s liner 0s;
+  z-index: 2;
+}
+.dig-header {
+  padding: 10px;
+  font-weight: bold;
+  background: #575757;
+  color: #f6f7f8;
+}
+
+.dig-body {
+  padding: 10px;
+  line-height: 30px;
+}
+.dig-footer {
+  text-align: center;
+  background: #f5f5f2;
+  padding: 3px 0;
+}
+.dig-footer a{
+  display: inline-block;
+  width: 100px;
+  padding: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #eee;
+  cursor: pointer;
+}
+.dig-footer a:active {
+  box-shadow: inset 2px 2px 4px 0 #ccc;
+  color: #666;
+}
+.freeze-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0 0 0 .1);
+  z-index: 1;
+}

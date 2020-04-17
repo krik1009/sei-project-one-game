@@ -244,11 +244,9 @@ function init() {
 
 
   // * 3. play game - move pac and get score
-  
-  
-  const soundPlayGame = setInterval( () => { playSound('normal') }, 4000)
   function playGame(event) {
     //play bgm
+    playSound('normal')
 
     // change pac face
     cells[pacOnePosition].classList.remove('pac1-start','pac1-highscore', 'ghsp')
@@ -320,7 +318,6 @@ function init() {
 
     // restart game when 1. full score, 2. lost
     if (foodEaten.length === foodArray.length) {
-      clearInterval(soundPlayGame)
       window.alert('You WIN!!!')
       const tryAgain = window.confirm('Try again?')
       if (tryAgain) {
@@ -330,7 +327,6 @@ function init() {
     }
 
     if (ghPosition.some( item => item === pacOnePosition )) {
-      clearInterval(soundPlayGame)
       playSound('gameover')
       window.alert('You Lose...')
       const tryAgain = window.confirm('Try again?')

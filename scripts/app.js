@@ -3,14 +3,12 @@ function init() {
   const gameGrid = document.querySelector('#game-board')
   const start = document.querySelector('#start')
   const reset = document.querySelector('#reset')
-  const options = document.querySelectorAll('option')
 
   // grid and cell
   const cells = []
   const width = 10
   const height = 10
   const cellCount = width * height
-
 
   const foodOnePosition = [1, 2, 3, 6, 7, 8, 91, 92, 93, 96, 97, 98, 
     10, 13, 16, 19, 20, 23, 26, 29, 70, 73, 76, 79, 
@@ -84,13 +82,26 @@ function init() {
     }
   }
 
+  let startTime = 0
+  let endTime = 0
+
   // f audio sound
-  // const btn = document.querySelector('#play')
-  const audio = document.querySelector('.audio')
+  const audio = document.querySelector('audio')
   function playSound(mode) { //start, gameover, normal, highscore
-    audio.src = `./audio/${mode}-mode.mp3`
+    audio.src = `./assets/audio/${mode}-mode.mp3`
     audio.play()
   }
+  // mute
+  const muteBtn = document.querySelector('#mute')
+  function muteBGM() {
+    clearTimeout(unmuteSound)
+    audio.src = ''
+    audio.play()
+    const unmuteSound = setTimeout( () => { playSound('normal') }, 100000)
+  }
+  muteBtn.addEventListener('click', muteBGM)
+  
+
 
   // def movement
   const keyCodePac = { 39: +1, 37: -1, 38: -height, 40: +height } // keyCode - pacPosition
@@ -116,22 +127,18 @@ function init() {
 
     cells[ghPosition[num]].classList.remove('food1', 'food2', 'foodsp')
     addClassStyle(ghPosition[num], `gh${num}`)
-
   }
 
-  const level = 1000 - options.forEach( item => Object.keys(options)[item] * 100) 
-  
   // return to default setting
   function returnToDefault() {
     // gh returns to initial cell
     ghPosition.forEach( item => removeClassStyle(item, 'ghsp'))
-    ghPosition = ghPositionInitial
     for (let i = 0; i <= ghPosition.length - 1; i++) {
+      ghPosition[i] = ghPositionInitial[i]
       addClassStyle(ghPosition[i], `gh${i}`)
     }
-  
 
-    // pac return to initial place w serious face
+    // pac return to initial place
     cells[pacOnePosition].classList.remove('pac1-eat', 'pac1-highscore')
     pacOnePosition = foodOnePosition[ Math.floor( Math.random() * (foodOnePosition.length - 1 ))] 
     cells[pacOnePosition].classList.add('pac1-start')
@@ -201,22 +208,27 @@ function init() {
   }
   createGrid(pacOnePosition, ghPosition, foodOnePosition, foodTwoPosition)
 
-  
+
+
   // * 2. start and reset the game
   function startGame() {
-    cells[pacOnePosition].classList.remove('ghsp', 'foodsp')
-    // const soundTrackStart = setInterval( () => { playSound(start)} , 5000 )
+    const startObj = new Date()
+    startTime = startObj.getTime()
 
-    const gh0Move = setInterval( () => { moveGhRandom(0) } , 1000)
-    const gh1Move = setInterval( () => { moveGhRandom(1) }, 1000)
-    const gh2Move = setInterval( () => { moveGhRandom(2) }, 1000)
-    const gh3Move = setInterval( () => { moveGhRandom(3) }, 1000)  // ! level 
+    cells[pacOnePosition].classList.remove('ghsp', 'foodsp')
+    playSound('start')
+
+    const gh0Move = setInterval( () => { moveGhRandom(0) }, 500)
+    const gh1Move = setInterval( () => { moveGhRandom(1) }, 500)
+    const gh2Move = setInterval( () => { moveGhRandom(2) }, 500)
+    const gh3Move = setInterval( () => { moveGhRandom(3) }, 500)  
     const pacAnimation = setInterval( () => {
       addClassStyle(pacOnePosition, 'pac1-start')
-    }, 1000)   
-
-    // reset game w reset button
+    }, 1000)
+    // reset game  reset button
     function resetGame() {
+      const endObj = new Date()
+      endTime = endObj.getTime()
       // clearInterval(soundTrackStart)
       clearInterval(gh0Move)
       clearInterval(gh1Move)
@@ -232,7 +244,12 @@ function init() {
 
 
   // * 3. play game - move pac and get score
+  
+  
+  const soundPlayGame = setInterval( () => { playSound('normal') }, 4000)
   function playGame(event) {
+    //play bgm
+
     // change pac face
     cells[pacOnePosition].classList.remove('pac1-start','pac1-highscore', 'ghsp')
     cells[pacOnePosition].classList.replace('pac1-start','pac1-eat')
@@ -248,7 +265,7 @@ function init() {
       foodScore('sp')
       
       pacOnePosition += keyCodePac[event.keyCode] // move pac
-      addClassStyle(pacOnePosition, 'pac1-eat')
+      addClassStyle(pacOnePosition, 'pac1-highscore')
 
  
       // ! rotate pac
@@ -303,31 +320,34 @@ function init() {
 
     // restart game when 1. full score, 2. lost
     if (foodEaten.length === foodArray.length) {
+      clearInterval(soundPlayGame)
       window.alert('You WIN!!!')
       const tryAgain = window.confirm('Try again?')
-      if (tryAgain) returnToDefault()
-      else location.reload()
+      if (tryAgain) {
+        returnToDefault()
+        playSound('start')
+      } else location.reload()
     }
 
     if (ghPosition.some( item => item === pacOnePosition )) {
+      clearInterval(soundPlayGame)
+      playSound('gameover')
       window.alert('You Lose...')
       const tryAgain = window.confirm('Try again?')
-      if (tryAgain) returnToDefault()
-      else location.reload()
+      if (tryAgain) {
+        returnToDefault()
+        playSound('start')
+      } else location.reload()
     }
   }
   document.addEventListener('keyup', playGame)
 
 
-  
-
-
-
-
-  // * 9. level option
-  // * 10. 2 player mode 
-  // * 11. background music (w mute, unmute)
-  // ! use value - start, normal mode, high-score mode, gameover 
+  // * high score mode
+  // * level option
+  // * 2 player mode 
+  // * mute/unmute background music mute
+  // * 
 }
 
 window.addEventListener('DOMContentLoaded', init)

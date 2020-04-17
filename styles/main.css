@@ -89,7 +89,6 @@ button #mode {
   justify-content: flex-start;
   /* margin: 20px 20px 20px 10%; */
 }
-
 button#start, button#reset {
   display: flex;
   justify-content: center;
@@ -106,11 +105,22 @@ button#start, button#reset {
   background:  rgb(46, 46, 46);
   cursor: pointer;
 }
-.action button #start a:active {
-  box-shadow: inset 2px 2px 4px 0 #ccc;
-  color: #666;
+button#start:hover, button#reset:hover {
+  background-color: orangered;
+  border: 2px solid orangered;
+}
+button#mute {
+  font-family: 'Baloo Paaji 2', cursive; 
+  width: 100px;
+  padding: 5px 0;
+  
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px solid transparent;
+
+  cursor: pointer;
 }
 
+/* score */
 .score-zone {
   display: flex;
   flex-direction: column;
@@ -229,6 +239,7 @@ button#start, button#reset {
   background-image: url('../assets/pachighscore.png');
   background-position: center;
   background-repeat: no-repeat;
+  background-size: 100%;
   cursor: pointer;
   /* animation: pac1-highscore .3s linear 1s infinite alternate; */
 }

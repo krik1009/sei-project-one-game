@@ -205,7 +205,6 @@ function init() {
     addClassStyle((height / 2) * width + (width / 2 - 1), ghTwo.style)
     addClassStyle((height / 2) * width + width / 2, ghThree.style)
 
-
     // for (let i = 0; i <= ghPosition.length - 1; i++) {
     //   ghPosition[i] = ghPositionInitial[i]
     //   addClassStyle(ghPosition[i], `gh${i}`)
@@ -222,7 +221,7 @@ function init() {
 
     // food items return to the initial position
     foodOne.initPosition.forEach( item => removeClassStyle(item, 'foodsp') )
-    foodSp.initPosition.forEach( item => removeClassStyle(item, 'foodsp') )
+    removeClassStyle(foodSp.position, foodSp.style)
     foodOne.initPosition.forEach( item => addClassStyle(item, 'food1') )
     foodTwo.initPosition.forEach( item => addClassStyle(item, 'food2') )
 
@@ -299,6 +298,11 @@ function init() {
   // *******************************************************************************************
   // * 2. start and reset the game
   let gameBGM = ''
+  let gh0Move = ''
+  let gh1Move = ''
+  let gh2Move = ''
+  let gh3Move = ''
+
   function startGame() {
     const startObj = new Date()
     startTime = startObj.getTime()
@@ -306,13 +310,13 @@ function init() {
 
     removeClassStyle(pacOne.position, foodSp.style) //! address high score mode
     pacOne.style = setInterval( () => { pacOne.pacEatingAnim() }, 10) // !! ? 
-    gameBGM = setInterval( () => { playSound('normal') }, 4500)
+    gameBGM = setInterval( () => { playSound('normal') }, 5000)
 
     // gh start to move
-    const gh0Move = setInterval( () => { ghZero.moveGhRandom() }, 500)
-    const gh1Move = setInterval( () => { ghOne.moveGhRandom() }, 500)
-    const gh2Move = setInterval( () => { ghTwo.moveGhRandom() }, 500)
-    const gh3Move = setInterval( () => { ghThree.moveGhRandom() }, 500)  
+    gh0Move = setInterval( () => { ghZero.moveGhRandom() }, 500)
+    gh1Move = setInterval( () => { ghOne.moveGhRandom() }, 500)
+    gh2Move = setInterval( () => { ghTwo.moveGhRandom() }, 500)
+    gh3Move = setInterval( () => { ghThree.moveGhRandom() }, 500)  
 
     // reset game  reset button
     function resetGame() {
@@ -325,7 +329,7 @@ function init() {
       clearInterval(gh3Move)
       clearInterval(pacOne.style)
       clearInterval(gameBGM)
-      returnToDefault()
+      returnToDefault() // ! score is not recorded
     }
     reset.addEventListener('click', resetGame)
   }
@@ -365,8 +369,13 @@ function init() {
       const tryAgain = window.confirm('Try again?')
       if (tryAgain) {
         returnToDefault()
-        playSound('start')
-      } else location.reload()
+      } else {
+        returnToDefault()
+        clearInterval(gh0Move)
+        clearInterval(gh1Move)
+        clearInterval(gh2Move)
+        clearInterval(gh3Move)
+      }
     }
 
     if (ghZero.position === pacOne.position 
@@ -377,9 +386,14 @@ function init() {
       window.alert('You Lose...')
       const tryAgain = window.confirm('Try again?')
       if (tryAgain) {
+        returnToDefault() // ! double gh on the game board
+      } else {
         returnToDefault()
-        playSound('start')
-      } else location.reload()
+        clearInterval(gh0Move)
+        clearInterval(gh1Move)
+        clearInterval(gh2Move)
+        clearInterval(gh3Move)
+      }
     }
   }
   document.addEventListener('keyup', playGameNormalMode)
@@ -399,7 +413,6 @@ function init() {
       ghThree.highScoreMode()
       route.highScoreMode()
       
-    
       if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
       && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
         removeClassStyle(pacOne.position, pacOne.style)

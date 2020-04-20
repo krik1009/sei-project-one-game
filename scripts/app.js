@@ -306,7 +306,7 @@ function init() {
 
     removeClassStyle(pacOne.position, foodSp.style) //! address high score mode
     pacOne.style = setInterval( () => { pacOne.pacEatingAnim() }, 10) // !! ? 
-    gameBGM = setInterval( () => { playSound('normal') }, 4000)
+    gameBGM = setInterval( () => { playSound('normal') }, 4500)
 
     // gh start to move
     const gh0Move = setInterval( () => { ghZero.moveGhRandom() }, 500)

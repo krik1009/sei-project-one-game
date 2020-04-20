@@ -134,13 +134,6 @@ button#mute {
   font-weight: 800;
 }
 
-/* route */
-.route {
-  background-color: #dbdbdb;
-}
-.gh-starting {
-  background-color: rgb(46, 46, 46);
-}
 
 /* pacman, start, move, die */
 .pac1-start {
@@ -150,6 +143,35 @@ button#mute {
   background-size: contain;
   cursor: pointer;
 }
+.pac1-eat {
+  /* set animation using pic 1 and 2 */
+  background-image: url('../assets/pac1-open-mouse.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  cursor: pointer;
+  /* animation: pac1-eat .3s linear 1s infinite alternate; */
+  /* transform: rotate(180deg); */
+  /* animation-name: 'pac1-eat';
+  animation-duration: .5s; */
+}
+/* @keyframes pac1-eat {
+  from {
+    background-image: url('../assets/pac1.png');
+  }
+  to {
+    background-image: url('../assets/pac1-open-mouse.png');
+  }
+} */
+.pac1-highscore {
+  background-image: url('../assets/pachighscore.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  cursor: pointer;
+  /* animation: pac1-highscore .3s linear 1s infinite alternate; */
+}
+
 
 /* ghost, start, move, transform */
 .gh0 {
@@ -187,6 +209,10 @@ button#mute {
   background-size: contain;
   cursor: pointer;
 }
+.gh-starting {
+  background-color: rgb(46, 46, 46);
+}
+
 /* food items */
 .food1 {
   background-image: url('../assets/food1.png');
@@ -215,38 +241,13 @@ button#mute {
   background-image: url('../assets/pac1-open-mouse.png');
   background-position: center;
 } */
-.pac1-eat {
-  /* set animation using pic 1 and 2 */
-  background-image: url('../assets/pac1-open-mouse.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  cursor: pointer;
-  /* animation: pac1-eat .3s linear 1s infinite alternate; */
-  /* transform: rotate(180deg); */
-  /* animation-name: 'pac1-eat';
-  animation-duration: .5s; */
-}
-/* @keyframes pac1-eat {
-  from {
-    background-image: url('../assets/pac1.png');
-  }
-  to {
-    background-image: url('../assets/pac1-open-mouse.png');
-  }
-} */
-.pac1-highscore {
-  background-image: url('../assets/pachighscore.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  cursor: pointer;
-  /* animation: pac1-highscore .3s linear 1s infinite alternate; */
+/* route */
+.route {
+  background-color: #dbdbdb;
 }
 .route-highscore {
   background-color: orange;
 }
-
 .one-player {
   animation: fadeInLeft 1s 1 0s ease;
 }
@@ -267,7 +268,7 @@ button#mute {
   }
 } */
 
-.dig-container {
+/* .dig-container {
   position: absolute;
   left:50%;
   transform: translateX(-50%) translateY(-50%);
@@ -316,4 +317,6 @@ button#mute {
   height: 100%;
   background: rgba(0 0 0 .1);
   z-index: 1;
-}
+} */
+
+

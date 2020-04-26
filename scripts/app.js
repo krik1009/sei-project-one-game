@@ -97,9 +97,11 @@ function init() {
       this.eatStyle = `pac${name}-eat`
       this.highScoreStyle = `pac${name}-highscore`
     }
-    pacEatingAnim() { //! not working (cannot read error)
+    pacEatingAnim() { //! not working
       removeClassStyle(this.postion, this.initStyle)
       addClassStyle(this.position, this.eatStyle)
+      removeClassStyle(this.postion, this.eatStyle)
+      addClassStyle(this.position, this.initStyle)
     }
     highScoreMode() {
       removeClassStyle(this.postion, this.initStyle)
@@ -107,8 +109,7 @@ function init() {
     }
   }
   const pacOne = new Pacman(1, foodOne.initPosition[ Math.floor( Math.random() * (foodOne.initPosition.length - 1 ))])
-
-
+  const pacOneEatingAnim = setInterval( pacOne.pacEatingAnim, 10)
 
   // *********************************************************
   // ghost (0, 1, 2, 3)
@@ -149,6 +150,7 @@ function init() {
   const ghThree = new Ghost(3,(height / 2) * width + width / 2)
 
 
+
   // f add/remove style
   function addClassStyle(cellId, newStyle) {
     cells[cellId].classList.add(newStyle)
@@ -157,14 +159,13 @@ function init() {
     cells[cellId].classList.remove(oldStyle)
   }
 
- 
+
+
   // def score
   const currentScore = document.querySelector('#current-score')
   const highScore = document.querySelector('#highest-score')
   const scoreRecord = [0]
-  // const fullScore = parseInt((foodOne.initPosition.length * foodOne.score 
-  // + foodTwo.initPosition.length * foodTwo.score 
-  // + foodSp.initPosition.length * (foodSp.score - foodOne.score))) // deduct food1 score
+
 
   
 
@@ -174,7 +175,7 @@ function init() {
     audio.src = `./assets/audio/${mode}-mode.mp3`
     audio.play()
   }
-  // mute
+  // ! mute
   const muteBtn = document.querySelector('#mute')
   function muteBGM() {
     clearTimeout(unmuteSound)
@@ -187,7 +188,7 @@ function init() {
 
 
 
-  // return to default setting
+  // return to the default setting
   function returnToDefault() {
     // gh returns to initial cell
     removeClassStyle(ghZero.position, 'ghsp') // ! turn off high score mode??
@@ -211,7 +212,7 @@ function init() {
     // }
 
     // pac return to initial position
-    clearInterval(pacOne.style)
+    clearInterval(pacOneEatingAnim)
     removeClassStyle(pacOne.position, pacOne.eatStyle)
     removeClassStyle(pacOne.position, 'pac1-highscore')
     pacOne.position = foodOne.initPosition[ Math.floor( Math.random() * (foodOne.initPosition.length - 1 ))] 
@@ -248,9 +249,6 @@ function init() {
     clearInterval(gameBGM)
   }
 
-
-  let startTime = 0
-  let endTime = 0
 
 
 
@@ -304,12 +302,12 @@ function init() {
   let gh3Move = ''
 
   function startGame() {
-    const startObj = new Date()
-    startTime = startObj.getTime()
+    // const startObj = new Date()
+    // startTime = startObj.getTime()
     playSound('start')
 
     removeClassStyle(pacOne.position, foodSp.style) //! address high score mode
-    pacOne.style = setInterval( () => { pacOne.pacEatingAnim() }, 10) // !! ? 
+    // const pacOneEatingAnim = setInterval( pacOne.pacEatingAnim, 10) // !! ? 
     gameBGM = setInterval( () => { playSound('normal') }, 5000)
 
     // gh start to move
@@ -320,14 +318,14 @@ function init() {
 
     // reset game  reset button
     function resetGame() {
-      const endObj = new Date()
-      endTime = endObj.getTime()
+      // const endObj = new Date()
+      // endTime = endObj.getTime()
       // clearInterval(soundTrackStart)
       clearInterval(gh0Move)
       clearInterval(gh1Move)
       clearInterval(gh2Move)
       clearInterval(gh3Move)
-      clearInterval(pacOne.style)
+      clearInterval(pacOneEatingAnim)
       clearInterval(gameBGM)
       returnToDefault() // ! score is not recorded
     }
@@ -335,6 +333,7 @@ function init() {
   }
   start.addEventListener('click', startGame)
 
+  console.log(pacOne)
 
   // *******************************************************************************************
   // * 3. play game
@@ -344,10 +343,12 @@ function init() {
   const keyCodePac = { 39: +1, 37: -1, 38: -height, 40: +height } // keyCode - pacPosition
 
   function playGameNormalMode(event) {
+    event.preventDefault()
+
     // add score, turn on/off high score mode
     if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
     && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
-      removeClassStyle(pacOne.position, pacOne.style)
+      removeClassStyle(pacOne.position, pacOne.initStyle)
 
       foodOne.foodScore()
       foodTwo.foodScore()
@@ -355,10 +356,13 @@ function init() {
 
       pacOne.position += keyCodePac[event.keyCode] // move pac
 
-      const rotateDeg = (event.keyCode - 39) * 90
-      pacOne.style.transform = `${rotateDeg}deg` //! ? ! rotate pac
 
-      addClassStyle(pacOne.position, pacOne.style)
+
+      const rotateDeg = (event.keyCode - 39) * 90
+      cells[pacOne.position].style.transform = `${rotateDeg}deg` //! ? ! rotate pac
+
+      addClassStyle(pacOne.position, pacOneEatingAnim)
+
 
     } else console.log('invalid input')
   
@@ -375,6 +379,7 @@ function init() {
         clearInterval(gh1Move)
         clearInterval(gh2Move)
         clearInterval(gh3Move)
+        clearInterval(pacOneEatingAnim)
       }
     }
 
@@ -393,8 +398,11 @@ function init() {
         clearInterval(gh1Move)
         clearInterval(gh2Move)
         clearInterval(gh3Move)
+        clearInterval(pacOneEatingAnim)
       }
     }
+
+    console.log(pacOne)
   }
   document.addEventListener('keyup', playGameNormalMode)
 
@@ -415,7 +423,7 @@ function init() {
       
       if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
       && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
-        removeClassStyle(pacOne.position, pacOne.style)
+        removeClassStyle(pacOne.position, pacOneEatingAnim)
 
         foodOne.foodScore()
         foodTwo.foodScore()
@@ -425,9 +433,9 @@ function init() {
 
         // ! rotate pac
         const rotateDeg = (event.keyCode - 39) * 90
-        pacOne.style.transform = `${rotateDeg}deg` //! ? 
+        pacOneEatingAnim.transform = `${rotateDeg}deg` //! ? 
 
-        addClassStyle(pacOne.position, pacOne.style)
+        addClassStyle(pacOne.position, pacOneEatingAnim)
 
         if (ghZero.position === pacOne.position) ghZero.position = (height / 2 - 1) * width + (width / 2 - 1)
         if (ghOne.position === pacOne.position) ghOne.position = (height / 2 - 1) * width + width / 2

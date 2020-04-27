@@ -145,7 +145,7 @@ button#mute {
 }
 .pac1-eat {
   /* set animation using pic 1 and 2 */
-  background-image: url('../assets/pac1-open-mouse.png');
+  background-image: url('../assets/pacman-gif-8.gif');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;

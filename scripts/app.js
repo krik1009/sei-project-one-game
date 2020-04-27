@@ -97,19 +97,20 @@ function init() {
       this.eatStyle = `pac${name}-eat`
       this.highScoreStyle = `pac${name}-highscore`
     }
-    pacEatingAnim() { //! not working
-      removeClassStyle(this.postion, this.initStyle)
-      addClassStyle(this.position, this.eatStyle)
-      removeClassStyle(this.postion, this.eatStyle)
-      addClassStyle(this.position, this.initStyle)
-    }
+    // pacEatingAnim(position) { //! not working
+    //   setInterval( () => {
+    //     removeClassStyle(position, this.initStyle)
+    //     addClassStyle(position, this.eatStyle)
+    //     // removeClassStyle(position, this.eatStyle)
+    //     // addClassStyle(position, this.initStyle)
+    //   }, 10)
+    // }
     highScoreMode() {
       removeClassStyle(this.postion, this.initStyle)
       addClassStyle(this.position, this.highScoreStyle)
     }
   }
   const pacOne = new Pacman(1, foodOne.initPosition[ Math.floor( Math.random() * (foodOne.initPosition.length - 1 ))])
-  const pacOneEatingAnim = setInterval( pacOne.pacEatingAnim, 10)
 
   // *********************************************************
   // ghost (0, 1, 2, 3)
@@ -189,12 +190,17 @@ function init() {
 
 
   // return to the default setting
-  function returnToDefault() {
+  function resetGame() {
     // gh returns to initial cell
     removeClassStyle(ghZero.position, 'ghsp') // ! turn off high score mode??
     removeClassStyle(ghOne.position, 'ghsp')
     removeClassStyle(ghTwo.position, 'ghsp')
     removeClassStyle(ghThree.position, 'ghsp')
+
+    clearInterval(gh0Move)
+    clearInterval(gh1Move)
+    clearInterval(gh2Move)
+    clearInterval(gh3Move)
 
     removeClassStyle(ghZero.position, ghZero.style) 
     removeClassStyle(ghOne.position, ghOne.style)
@@ -206,13 +212,9 @@ function init() {
     addClassStyle((height / 2) * width + (width / 2 - 1), ghTwo.style)
     addClassStyle((height / 2) * width + width / 2, ghThree.style)
 
-    // for (let i = 0; i <= ghPosition.length - 1; i++) {
-    //   ghPosition[i] = ghPositionInitial[i]
-    //   addClassStyle(ghPosition[i], `gh${i}`)
-    // }
 
-    // pac return to initial position
-    clearInterval(pacOneEatingAnim)
+    // pac return to the initial position
+    clearInterval(pacOne.pacEatingAnim)
     removeClassStyle(pacOne.position, pacOne.eatStyle)
     removeClassStyle(pacOne.position, 'pac1-highscore')
     pacOne.position = foodOne.initPosition[ Math.floor( Math.random() * (foodOne.initPosition.length - 1 ))] 
@@ -252,8 +254,6 @@ function init() {
 
 
 
-
-
   // *******************************************************************************************
   // * 1. create grid + set pac, gh, food
   function createGrid() {
@@ -271,26 +271,23 @@ function init() {
     addClassStyle(ghZero.position, 'gh-starting')
     addClassStyle(ghOne.position, 'gh-starting')
     addClassStyle(ghTwo.position, 'gh-starting')
-    addClassStyle(ghThree.position, 'gh-starting')
+    addClassStyle(ghThree.position, 'gh-starting')  
+    
+    // add food1 2 //? must comes first to display the pac?
+    removeClassStyle(foodSp.initPosition, foodSp.style)
+    foodOne.initPosition.filter( item => item !== pacOne.position ).forEach( item => addClassStyle(item, foodOne.style)) // remove f1 from cell w pac
+    foodTwo.initPosition.forEach( item => addClassStyle(item, foodTwo.style))
 
     // add pac and gh1-4
-    addClassStyle(pacOne.position, pacOne.initStyle) // !! pac1-start not shown
-    console.log(pacOne.initStyle)
-    console.log(pacOne.position)
-    console.log(cells[pacOne.position].classList)
+    addClassStyle(pacOne.position, pacOne.initStyle)
 
     addClassStyle(ghZero.position, ghZero.style)
     addClassStyle(ghOne.position,  ghOne.style)
     addClassStyle(ghTwo.position,  ghTwo.style)
     addClassStyle(ghThree.position,  ghThree.style)
 
-    // add food1 2
-    removeClassStyle(foodSp.initPosition, foodSp.style)
-    foodOne.initPosition.filter( item => item !== pacOne.postion ).forEach( item => addClassStyle(item, foodOne.style)) // remove f1 from cell w pac
-    foodTwo.initPosition.forEach( item => addClassStyle(item, foodTwo.style))
   }
   createGrid()
-
 
 
   // *******************************************************************************************
@@ -315,25 +312,11 @@ function init() {
     gh1Move = setInterval( () => { ghOne.moveGhRandom() }, 500)
     gh2Move = setInterval( () => { ghTwo.moveGhRandom() }, 500)
     gh3Move = setInterval( () => { ghThree.moveGhRandom() }, 500)  
-
-    // reset game  reset button
-    function resetGame() {
-      // const endObj = new Date()
-      // endTime = endObj.getTime()
-      // clearInterval(soundTrackStart)
-      clearInterval(gh0Move)
-      clearInterval(gh1Move)
-      clearInterval(gh2Move)
-      clearInterval(gh3Move)
-      clearInterval(pacOneEatingAnim)
-      clearInterval(gameBGM)
-      returnToDefault() // ! score is not recorded
-    }
-    reset.addEventListener('click', resetGame)
+  
   }
   start.addEventListener('click', startGame)
-
-  console.log(pacOne)
+ 
+  
 
   // *******************************************************************************************
   // * 3. play game
@@ -348,7 +331,7 @@ function init() {
     // add score, turn on/off high score mode
     if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
     && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
-      removeClassStyle(pacOne.position, pacOne.initStyle)
+      removeClassStyle(pacOne.position, pacOne.eatStyle)
 
       foodOne.foodScore()
       foodTwo.foodScore()
@@ -356,13 +339,10 @@ function init() {
 
       pacOne.position += keyCodePac[event.keyCode] // move pac
 
-
-
       const rotateDeg = (event.keyCode - 39) * 90
       cells[pacOne.position].style.transform = `${rotateDeg}deg` //! ? ! rotate pac
 
-      addClassStyle(pacOne.position, pacOneEatingAnim)
-
+      addClassStyle(pacOne.position, pacOne.eatStyle)
 
     } else console.log('invalid input')
   
@@ -372,14 +352,10 @@ function init() {
       window.alert('You WIN!!!')
       const tryAgain = window.confirm('Try again?')
       if (tryAgain) {
-        returnToDefault()
+        resetGame() 
+        startGame()
       } else {
-        returnToDefault()
-        clearInterval(gh0Move)
-        clearInterval(gh1Move)
-        clearInterval(gh2Move)
-        clearInterval(gh3Move)
-        clearInterval(pacOneEatingAnim)
+        resetGame()
       }
     }
 
@@ -391,61 +367,57 @@ function init() {
       window.alert('You Lose...')
       const tryAgain = window.confirm('Try again?')
       if (tryAgain) {
-        returnToDefault() // ! double gh on the game board
+        resetGame() // ! double gh on the game board
+        startGame()
       } else {
-        returnToDefault()
-        clearInterval(gh0Move)
-        clearInterval(gh1Move)
-        clearInterval(gh2Move)
-        clearInterval(gh3Move)
-        clearInterval(pacOneEatingAnim)
+        resetGame()
       }
     }
-
-    console.log(pacOne)
   }
   document.addEventListener('keyup', playGameNormalMode)
 
 
 
   // ! highScoreMode - how to handle key up event
-  const normalModeTime = setTimeout( () => { playGameNormalMode }, 5000)
-  function playGameHighScoreMode(event) {
-    if (foodSp.foodScore()) {
-      clearTimeout(normalModeTime)
+  // const normalModeTime = setTimeout( () => { playGameNormalMode }, 5000)
+  // function playGameHighScoreMode(event) {
+  //   if (foodSp.foodScore()) {
+  //     clearTimeout(normalModeTime)
 
-      pacOne.highScoreMode()
-      ghZero.highScoreMode()
-      ghOne.highScoreMode()
-      ghTwo.highScoreMode()
-      ghThree.highScoreMode()
-      route.highScoreMode()
+  //     pacOne.highScoreMode()
+  //     ghZero.highScoreMode()
+  //     ghOne.highScoreMode()
+  //     ghTwo.highScoreMode()
+  //     ghThree.highScoreMode()
+  //     route.highScoreMode()
       
-      if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
-      && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
-        removeClassStyle(pacOne.position, pacOneEatingAnim)
+  //     if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
+  //     && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
+  //       removeClassStyle(pacOne.position, pacOneEatingAnim)
 
-        foodOne.foodScore()
-        foodTwo.foodScore()
-        foodSp.foodScore()
+  //       foodOne.foodScore()
+  //       foodTwo.foodScore()
+  //       foodSp.foodScore()
 
-        pacOne.position += keyCodePac[event.keyCode] // move pac
+  //       pacOne.position += keyCodePac[event.keyCode] // move pac
 
-        // ! rotate pac
-        const rotateDeg = (event.keyCode - 39) * 90
-        pacOneEatingAnim.transform = `${rotateDeg}deg` //! ? 
+  //       // ! rotate pac
+  //       const rotateDeg = (event.keyCode - 39) * 90
+  //       pacOneEatingAnim.transform = `${rotateDeg}deg` //! ? 
 
-        addClassStyle(pacOne.position, pacOneEatingAnim)
+  //       addClassStyle(pacOne.position, pacOneEatingAnim)
 
-        if (ghZero.position === pacOne.position) ghZero.position = (height / 2 - 1) * width + (width / 2 - 1)
-        if (ghOne.position === pacOne.position) ghOne.position = (height / 2 - 1) * width + width / 2
-        if (ghTwo.position === pacOne.position) ghTwo.position = (height / 2) * width + (width / 2 - 1)
-        if (ghThree.position === pacOne.position) ghThree.position = (height / 2) * width + width / 2
-      } else console.log('invalid input')
-    }
-  }
-  document.addEventListener('keyup', playGameHighScoreMode)
+  //       if (ghZero.position === pacOne.position) ghZero.position = (height / 2 - 1) * width + (width / 2 - 1)
+  //       if (ghOne.position === pacOne.position) ghOne.position = (height / 2 - 1) * width + width / 2
+  //       if (ghTwo.position === pacOne.position) ghTwo.position = (height / 2) * width + (width / 2 - 1)
+  //       if (ghThree.position === pacOne.position) ghThree.position = (height / 2) * width + width / 2
+  //     } else console.log('invalid input')
+  //   }
+  // }
+  // document.addEventListener('keyup', playGameHighScoreMode)
 
+
+  reset.addEventListener('click', resetGame)
   
   // * high score mode
   // * level option

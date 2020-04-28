@@ -1,3 +1,10 @@
+// * mute/unmute background music
+// * rotate pac
+// * high score mode
+// * level option
+// * 2 player mode 
+
+
 function init() {
   // dom elements
   const gameGrid = document.querySelector('#game-board')
@@ -165,8 +172,7 @@ function init() {
   // def score
   const currentScore = document.querySelector('#current-score')
   const highScore = document.querySelector('#highest-score')
-  const scoreRecord = [0]
-
+  const scoreRecord = []
 
   
 
@@ -179,10 +185,11 @@ function init() {
   // ! mute
   const muteBtn = document.querySelector('#mute')
   function muteBGM() {
-    clearTimeout(unmuteSound)
-    audio.src = ''
-    audio.play()
-    const unmuteSound = setTimeout( () => { playSound('normal') }, 1000)
+    if (audio) audio.muted = true
+    // clearTimeout(unmuteSound)
+    // audio.src = ''
+    // audio.play()
+    // const unmuteSound = setTimeout( playSound('normal') , 1000)
   }
   muteBtn.addEventListener('click', muteBGM)
   
@@ -191,12 +198,7 @@ function init() {
 
   // return to the default setting
   function resetGame() {
-    // gh returns to initial cell
-    removeClassStyle(ghZero.position, 'ghsp') // ! turn off high score mode??
-    removeClassStyle(ghOne.position, 'ghsp')
-    removeClassStyle(ghTwo.position, 'ghsp')
-    removeClassStyle(ghThree.position, 'ghsp')
-
+    // gh return to the init positions
     clearInterval(gh0Move)
     clearInterval(gh1Move)
     clearInterval(gh2Move)
@@ -213,18 +215,13 @@ function init() {
     addClassStyle((height / 2) * width + width / 2, ghThree.style)
 
 
-    // pac return to the initial position
-    clearInterval(pacOne.pacEatingAnim)
+    // pac disappear
     removeClassStyle(pacOne.position, pacOne.eatStyle)
-    removeClassStyle(pacOne.position, 'pac1-highscore')
-    pacOne.position = foodOne.initPosition[ Math.floor( Math.random() * (foodOne.initPosition.length - 1 ))] 
-    addClassStyle(pacOne.position, pacOne.initStyle)
-    // cells[pacOne.position].classList.remove('pac1-eat', 'pac1-highscore')
-    // cells[pacOne.position].classList.add('pac1-start')
+    removeClassStyle(pacOne.position, pacOne.initStyle)
+    
 
-    // food items return to the initial position
+    // reset food items
     foodOne.initPosition.forEach( item => removeClassStyle(item, 'foodsp') )
-    removeClassStyle(foodSp.position, foodSp.style)
     foodOne.initPosition.forEach( item => addClassStyle(item, 'food1') )
     foodTwo.initPosition.forEach( item => addClassStyle(item, 'food2') )
 
@@ -232,22 +229,14 @@ function init() {
     // empty food eaten, foodsp
     foodEaten = []
 
-    // display pac1
-    removeClassStyle(pacOne.position, foodOne.style) // ! do i need to remove the food style??? 
-    removeClassStyle(pacOne.position, foodTwo.style)
-    removeClassStyle(pacOne.position, foodSp.style)
-    // removeClassStyle(pacOne.position, 'ghsp')
-    addClassStyle(pacOne.position,pacOne.initStyle)
-    route.position.forEach( item => removeClassStyle(item, 'ghsp') ) // ! replace it? turn off high-score mode?
 
     // reset current score, update score record
     scoreRecord.push(parseInt(currentScore.textContent))
     highScore.textContent = Math.max(...scoreRecord) 
     currentScore.textContent = 0
 
-    route.position.forEach( item => removeClassStyle(item, route.highScoreStyle) ) //! turn off high-score mode?
-    route.position.forEach( item => addClassStyle(item, route.style) ) 
-    
+
+    // reset BGM
     clearInterval(gameBGM)
   }
 
@@ -273,14 +262,12 @@ function init() {
     addClassStyle(ghTwo.position, 'gh-starting')
     addClassStyle(ghThree.position, 'gh-starting')  
     
-    // add food1 2 //? must comes first to display the pac?
+    // add food
     removeClassStyle(foodSp.initPosition, foodSp.style)
-    foodOne.initPosition.filter( item => item !== pacOne.position ).forEach( item => addClassStyle(item, foodOne.style)) // remove f1 from cell w pac
+    foodOne.initPosition.forEach( item => addClassStyle(item, foodOne.style)) // remove f1 from cell w pac
     foodTwo.initPosition.forEach( item => addClassStyle(item, foodTwo.style))
 
-    // add pac and gh1-4
-    addClassStyle(pacOne.position, pacOne.initStyle)
-
+    // add gh
     addClassStyle(ghZero.position, ghZero.style)
     addClassStyle(ghOne.position,  ghOne.style)
     addClassStyle(ghTwo.position,  ghTwo.style)
@@ -299,20 +286,25 @@ function init() {
   let gh3Move = ''
 
   function startGame() {
-    // const startObj = new Date()
-    // startTime = startObj.getTime()
+    // BGM
     playSound('start')
-
-    removeClassStyle(pacOne.position, foodSp.style) //! address high score mode
-    // const pacOneEatingAnim = setInterval( pacOne.pacEatingAnim, 10) // !! ? 
     gameBGM = setInterval( () => { playSound('normal') }, 5000)
+    
+    //gh remove from init position
+    removeClassStyle((height / 2 - 1) * width + (width / 2 - 1), ghZero.style)
+    removeClassStyle((height / 2 - 1) * width + width / 2, ghOne.style)
+    removeClassStyle((height / 2) * width + (width / 2 - 1), ghTwo.style)
+    removeClassStyle((height / 2) * width + width / 2, ghThree.style)
 
     // gh start to move
     gh0Move = setInterval( () => { ghZero.moveGhRandom() }, 500)
     gh1Move = setInterval( () => { ghOne.moveGhRandom() }, 500)
     gh2Move = setInterval( () => { ghTwo.moveGhRandom() }, 500)
-    gh3Move = setInterval( () => { ghThree.moveGhRandom() }, 500)  
-  
+    gh3Move = setInterval( () => { ghThree.moveGhRandom() }, 500)
+
+    // add pac at the random position
+    pacOne.position = foodOne.initPosition[ Math.floor( Math.random() * (foodOne.initPosition.length - 1 ))] 
+    addClassStyle(pacOne.position, pacOne.initStyle)
   }
   start.addEventListener('click', startGame)
  
@@ -328,6 +320,9 @@ function init() {
   function playGameNormalMode(event) {
     event.preventDefault()
 
+    // pac turn into the eating mode
+    removeClassStyle(pacOne.position, pacOne.initStyle)
+
     // add score, turn on/off high score mode
     if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
     && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
@@ -340,7 +335,7 @@ function init() {
       pacOne.position += keyCodePac[event.keyCode] // move pac
 
       const rotateDeg = (event.keyCode - 39) * 90
-      cells[pacOne.position].style.transform = `${rotateDeg}deg` //! ? ! rotate pac
+      cells[pacOne.position].style.transform = `${rotateDeg}deg` //!  ! rotate pac
 
       addClassStyle(pacOne.position, pacOne.eatStyle)
 
@@ -361,9 +356,10 @@ function init() {
 
     if (ghZero.position === pacOne.position 
       || ghOne.position === pacOne.position 
-      || ghTwo.position === pacOne.position 
+      || ghTwo.position === pacOne.position
       || ghThree.position === pacOne.position ) {
       playSound('gameover')
+
       window.alert('You Lose...')
       const tryAgain = window.confirm('Try again?')
       if (tryAgain) {
@@ -418,12 +414,6 @@ function init() {
 
 
   reset.addEventListener('click', resetGame)
-  
-  // * high score mode
-  // * level option
-  // * 2 player mode 
-  // * mute/unmute background music mute
-  // * 
 }
 
 window.addEventListener('DOMContentLoaded', init)

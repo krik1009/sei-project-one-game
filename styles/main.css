@@ -135,6 +135,108 @@ button#mute {
 }
 
 
+/* route, gh starting position background */
+.route {
+  background-color: #dbdbdb;
+}
+.route-highscore {
+  background-color: orange;
+}
+.gh-starting {
+  background-color: rgb(46, 46, 46);
+}
+
+
+
+/* food items */
+.food1 {
+  background-image: url('../assets/food1.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20%;
+  cursor: pointer;
+}
+.food2 {
+  background-image: url('../assets/food2.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 40%;
+  cursor: pointer;
+}
+.foodsp {
+  background-image: url('../assets/foodsp.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 40%;
+  cursor: pointer;
+}
+
+
+/* ghost */
+.gh0 {
+  background-image: url('../assets/gh0.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.gh1 {
+  background-image: url('../assets/gh1.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.gh2 {
+  background-image: url('../assets/gh2.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.gh3 {
+  background-image: url('../assets/gh3.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+.ghsp {
+  background-image: url('../assets/gh-high-score.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+
+/* eating pac */
+/* --pac-style {
+  background-image: url('../assets/pac1-open-mouse.png');
+  background-position: center;
+} */
+
+.one-player {
+  animation: fadeInLeft 1s 1 0s ease;
+}
+/* @keyframes pac1-eat {
+  from {
+    background-image: url('../assets/pac1.png');
+  }
+  to {
+    background-image: url('../assets/pac1-open-mouse.png');
+  }
+}
+@keyframes pac1-highscore {
+  from {
+    background-image: url('../assets/pac1-open-mouse.png');
+  }
+  to {
+    background-image: url('../assets/pachighscore.png');
+  }
+} */
+
+
 /* pacman, start, move, die */
 .pac1-start {
   background-image: url('../assets/pac1.png');
@@ -171,152 +273,5 @@ button#mute {
   cursor: pointer;
   /* animation: pac1-highscore .3s linear 1s infinite alternate; */
 }
-
-
-/* ghost, start, move, transform */
-.gh0 {
-  background-image: url('../assets/gh0.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  cursor: pointer;
-}
-.gh1 {
-  background-image: url('../assets/gh1.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  cursor: pointer;
-}
-.gh2 {
-  background-image: url('../assets/gh2.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  cursor: pointer;
-}
-.gh3 {
-  background-image: url('../assets/gh3.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  cursor: pointer;
-}
-.ghsp {
-  background-image: url('../assets/gh-high-score.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  cursor: pointer;
-}
-.gh-starting {
-  background-color: rgb(46, 46, 46);
-}
-
-/* food items */
-.food1 {
-  background-image: url('../assets/food1.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 20%;
-  cursor: pointer;
-}
-.food2 {
-  background-image: url('../assets/food2.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 40%;
-  cursor: pointer;
-}
-.foodsp {
-  background-image: url('../assets/foodsp.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 40%;
-  cursor: pointer;
-}
-
-/* eating pac */
-/* --pac-style {
-  background-image: url('../assets/pac1-open-mouse.png');
-  background-position: center;
-} */
-/* route */
-.route {
-  background-color: #dbdbdb;
-}
-.route-highscore {
-  background-color: orange;
-}
-.one-player {
-  animation: fadeInLeft 1s 1 0s ease;
-}
-/* @keyframes pac1-eat {
-  from {
-    background-image: url('../assets/pac1.png');
-  }
-  to {
-    background-image: url('../assets/pac1-open-mouse.png');
-  }
-}
-@keyframes pac1-highscore {
-  from {
-    background-image: url('../assets/pac1-open-mouse.png');
-  }
-  to {
-    background-image: url('../assets/pachighscore.png');
-  }
-} */
-
-/* .dig-container {
-  position: absolute;
-  left:50%;
-  transform: translateX(-50%) translateY(-50%);
-  padding: 10px;
-  border: 2px solid #ddd;
-  box-shadow: 1px 1px 5px 1px #ccc;
-  opacity: 1;
-  border-radius: 10px;
-  transition: all .3s liner 0s;
-  z-index: 2;
-}
-.dig-header {
-  padding: 10px;
-  font-weight: bold;
-  background: #575757;
-  color: #f6f7f8;
-}
-
-.dig-body {
-  padding: 10px;
-  line-height: 30px;
-}
-.dig-footer {
-  text-align: center;
-  background: #f5f5f2;
-  padding: 3px 0;
-}
-.dig-footer a{
-  display: inline-block;
-  width: 100px;
-  padding: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background: #eee;
-  cursor: pointer;
-}
-.dig-footer a:active {
-  box-shadow: inset 2px 2px 4px 0 #ccc;
-  color: #666;
-}
-.freeze-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0 0 0 .1);
-  z-index: 1;
-} */
 
 

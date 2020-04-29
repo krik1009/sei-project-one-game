@@ -1,4 +1,3 @@
-// * mute/unmute background music
 // * rotate pac
 // * high score mode
 // * level option
@@ -104,14 +103,6 @@ function init() {
       this.eatStyle = `pac${name}-eat`
       this.highScoreStyle = `pac${name}-highscore`
     }
-    // pacEatingAnim(position) { //! not working
-    //   setInterval( () => {
-    //     removeClassStyle(position, this.initStyle)
-    //     addClassStyle(position, this.eatStyle)
-    //     // removeClassStyle(position, this.eatStyle)
-    //     // addClassStyle(position, this.initStyle)
-    //   }, 10)
-    // }
     highScoreMode() {
       removeClassStyle(this.postion, this.initStyle)
       addClassStyle(this.position, this.highScoreStyle)
@@ -178,19 +169,23 @@ function init() {
 
   // f audio sound
   const audio = document.querySelector('audio')
-  function playSound(mode) { //start, gameover, normal, highscore
+  function playAudio(mode) { //start, gameover, normal, highscore
     audio.src = `./assets/audio/${mode}-mode.mp3`
     audio.play()
   }
-  // !turn on/off the sound 
-  const bgmBtns = document.querySelectorAll('.bgm')
-  function playBGM(event) {
-    event.preventDefault()
-    if (audio) audio.muted = event.target.value
-  }
-  bgmBtns.forEach( item => item.addEventListener('click', playBGM) )
+  // turn on/off the sound
+  document.getElementById('sound-off').addEventListener('click', () => {
+    audio.muted = true
+  })
+  document.getElementById('sound-on').addEventListener('click', () => {
+    audio.muted = false
+  })
 
-
+  // const audioBtns = document.querySelectorAll('.sound')
+  // function muteAudio(event) {
+  //   audio.muted = event.target.value
+  // }
+  // audioBtns.forEach( item => item.addEventListener('click', muteAudio))
 
 
   // return to the default setting
@@ -284,8 +279,8 @@ function init() {
 
   function startGame() {
     // BGM
-    playSound('start')
-    gameBGM = setInterval( () => { playSound('normal') }, 5000)
+    playAudio('start')
+    gameBGM = setInterval( () => { playAudio('normal') }, 5000)
     
     //gh remove from init position
     removeClassStyle((height / 2 - 1) * width + (width / 2 - 1), ghZero.style)
@@ -308,10 +303,7 @@ function init() {
   
 
   // *******************************************************************************************
-  // * 3. play game
-  //play bgm
-  
-  // def movement
+  // * 3. play game  
   const keyCodePac = { 39: +1, 37: -1, 38: -height, 40: +height } // keyCode - pacPosition
 
   function playGameNormalMode(event) {
@@ -320,14 +312,14 @@ function init() {
     // pac turn into the eating mode
     removeClassStyle(pacOne.position, pacOne.initStyle)
 
-    // add score, turn on/off high score mode
+    // add score, turn on/off the high score mode
     if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
     && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
       removeClassStyle(pacOne.position, pacOne.eatStyle)
 
       foodOne.foodScore()
       foodTwo.foodScore()
-      foodSp.foodScore()
+      foodSp.foodScore() //! food sp is only in high-score mode
 
       pacOne.position += keyCodePac[event.keyCode] // move pac
 
@@ -355,7 +347,7 @@ function init() {
       || ghOne.position === pacOne.position 
       || ghTwo.position === pacOne.position
       || ghThree.position === pacOne.position ) {
-      playSound('gameover')
+      playAudio('gameover')
 
       window.alert('You Lose...')
       const tryAgain = window.confirm('Try again?')

@@ -153,14 +153,14 @@ button#mute {
   background-image: url('../assets/food1.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 20%;
+  background-size: 30%;
   cursor: pointer;
 }
 .food2 {
   background-image: url('../assets/food2.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 40%;
+  background-size: 60%;
   cursor: pointer;
 }
 .foodsp {
@@ -174,28 +174,28 @@ button#mute {
 
 /* ghost */
 .gh0 {
-  background-image: url('../assets/gh0.png');
+  background-image: url('../assets/gh0red.gif');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 .gh1 {
-  background-image: url('../assets/gh1.png');
+  background-image: url('../assets/gh1green.gif');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 .gh2 {
-  background-image: url('../assets/gh2.png');
+  background-image: url('../assets/gh2yellow.gif');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
 }
 .gh3 {
-  background-image: url('../assets/gh3.png');
+  background-image: url('../assets/gh3pink.gif');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -239,7 +239,7 @@ button#mute {
 
 /* pacman, start, move, die */
 .pac1-start {
-  background-image: url('../assets/pac1.png');
+  background-image: url('../assets/pac1start.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -247,7 +247,7 @@ button#mute {
 }
 .pac1-eat {
   /* set animation using pic 1 and 2 */
-  background-image: url('../assets/pacman-gif-8.gif');
+  background-image: url('../assets/pac1eating.gif');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;

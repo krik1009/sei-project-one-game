@@ -186,7 +186,7 @@ function init() {
   const bgmBtns = document.querySelectorAll('.bgm')
   function playBGM(event) {
     event.preventDefault()
-    audio.muted = event.target.value
+    if (audio) audio.muted = event.target.value
   }
   bgmBtns.forEach( item => item.addEventListener('click', playBGM) )
 

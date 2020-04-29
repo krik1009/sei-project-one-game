@@ -182,17 +182,14 @@ function init() {
     audio.src = `./assets/audio/${mode}-mode.mp3`
     audio.play()
   }
-  // ! mute
-  const muteBtn = document.querySelector('#mute')
-  function muteBGM() {
-    if (audio) audio.muted = true
-    // clearTimeout(unmuteSound)
-    // audio.src = ''
-    // audio.play()
-    // const unmuteSound = setTimeout( playSound('normal') , 1000)
+  // !turn on/off the sound 
+  const bgmBtns = document.querySelectorAll('.bgm')
+  function playBGM(event) {
+    event.preventDefault()
+    audio.muted = event.target.value
   }
-  muteBtn.addEventListener('click', muteBGM)
-  
+  bgmBtns.forEach( item => item.addEventListener('click', playBGM) )
+
 
 
 

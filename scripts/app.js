@@ -1,5 +1,5 @@
 // * rotate pac
-// * high score mode
+// * high score mode, food sp - pac high-score
 // * level option
 // * 2 player mode 
 
@@ -102,6 +102,9 @@ function init() {
       this.initStyle = `pac${name}-start`
       this.eatStyle = `pac${name}-eat`
       this.highScoreStyle = `pac${name}-highscore`
+    }
+    pacRotate(style, rotateDeg) {
+      style.transform = `${rotateDeg}deg` 
     }
     highScoreMode() {
       removeClassStyle(this.postion, this.initStyle)
@@ -306,6 +309,7 @@ function init() {
   // * 3. play game  
   const keyCodePac = { 39: +1, 37: -1, 38: -height, 40: +height } // keyCode - pacPosition
 
+
   function playGameNormalMode(event) {
     event.preventDefault()
 
@@ -317,16 +321,18 @@ function init() {
     && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
       removeClassStyle(pacOne.position, pacOne.eatStyle)
 
+      pacOne.position += keyCodePac[event.keyCode] // move pac
+
+
+      console.log(cells[pacOne.position].style)
+      console.log(pacOne.eatStyle)
+      addClassStyle(pacOne.position, pacOne.pacRotate(pacOne.eatStyle, (event.keyCode - 39) * 90) ) //! rotate pac error
+
+
       foodOne.foodScore()
       foodTwo.foodScore()
       foodSp.foodScore() //! food sp is only in high-score mode
 
-      pacOne.position += keyCodePac[event.keyCode] // move pac
-
-      const rotateDeg = (event.keyCode - 39) * 90
-      cells[pacOne.position].style.transform = `${rotateDeg}deg` //!  ! rotate pac
-
-      addClassStyle(pacOne.position, pacOne.eatStyle)
 
     } else console.log('invalid input')
   

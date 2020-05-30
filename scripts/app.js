@@ -1,7 +1,7 @@
-// * rotate pac
 // * high score mode, food sp - pac high-score
 // * level option
 // * 2 player mode 
+// * route wall
 
 
 function init() {
@@ -103,8 +103,8 @@ function init() {
       this.eatStyle = `pac${name}-eat`
       this.highScoreStyle = `pac${name}-highscore`
     }
-    pacRotate(style, rotateDeg) {
-      style.transform = `${rotateDeg}deg` 
+    pacRotate(cell, rotateDeg) {
+      cells[cell].style.transform = `rotate(${rotateDeg}deg)` 
     }
     highScoreMode() {
       removeClassStyle(this.postion, this.initStyle)
@@ -184,11 +184,6 @@ function init() {
     audio.muted = false
   })
 
-  // const audioBtns = document.querySelectorAll('.sound')
-  // function muteAudio(event) {
-  //   audio.muted = event.target.value
-  // }
-  // audioBtns.forEach( item => item.addEventListener('click', muteAudio))
 
 
   // return to the default setting
@@ -213,6 +208,7 @@ function init() {
     // pac disappear
     removeClassStyle(pacOne.position, pacOne.eatStyle)
     removeClassStyle(pacOne.position, pacOne.initStyle)
+    pacOne.pacRotate(pacOne.position, 0)
     
 
     // reset food items
@@ -320,19 +316,16 @@ function init() {
     if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
     && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
       removeClassStyle(pacOne.position, pacOne.eatStyle)
-
-      pacOne.position += keyCodePac[event.keyCode] // move pac
-
-
-      console.log(cells[pacOne.position].style)
-      console.log(pacOne.eatStyle)
-      addClassStyle(pacOne.position, pacOne.pacRotate(pacOne.eatStyle, (event.keyCode - 39) * 90) ) //! rotate pac error
-
+      pacOne.pacRotate(pacOne.position, 0)
 
       foodOne.foodScore()
       foodTwo.foodScore()
-      foodSp.foodScore() //! food sp is only in high-score mode
+      foodSp.foodScore()
+    
+      pacOne.position += keyCodePac[event.keyCode] // move pac
 
+      addClassStyle(pacOne.position, pacOne.eatStyle)
+      pacOne.pacRotate(pacOne.position, (event.keyCode - 39) * 90)
 
     } else console.log('invalid input')
   
@@ -358,7 +351,7 @@ function init() {
       window.alert('You Lose...')
       const tryAgain = window.confirm('Try again?')
       if (tryAgain) {
-        resetGame() // ! double gh on the game board
+        resetGame()
         startGame()
       } else {
         resetGame()
@@ -368,45 +361,44 @@ function init() {
   document.addEventListener('keyup', playGameNormalMode)
 
 
+  const normalMode = setTimeout( () => { playGameNormalMode }, 5000)
 
-  // ! highScoreMode - how to handle key up event
-  // const normalModeTime = setTimeout( () => { playGameNormalMode }, 5000)
-  // function playGameHighScoreMode(event) {
-  //   if (foodSp.foodScore()) {
-  //     clearTimeout(normalModeTime)
+  function playGameHighScoreMode(event) {
+    console.log('highscore')
+    
 
-  //     pacOne.highScoreMode()
-  //     ghZero.highScoreMode()
-  //     ghOne.highScoreMode()
-  //     ghTwo.highScoreMode()
-  //     ghThree.highScoreMode()
-  //     route.highScoreMode()
-      
-  //     if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
-  //     && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
-  //       removeClassStyle(pacOne.position, pacOneEatingAnim)
+    pacOne.highScoreMode()
+    ghZero.highScoreMode()
+    ghOne.highScoreMode()
+    ghTwo.highScoreMode()
+    ghThree.highScoreMode()
+    route.highScoreMode()
+    
+    if (route.position.includes(pacOne.position + keyCodePac[event.keyCode]) // on the route
+    && setBoundary(pacOne.position, keyCodePac[event.keyCode])) {  // feasible path
+      removeClassStyle(pacOne.position, pacOne.eatStyle)
+      pacOne.pacRotate(pacOne.position, 0)
 
-  //       foodOne.foodScore()
-  //       foodTwo.foodScore()
-  //       foodSp.foodScore()
+      foodOne.foodScore()
+      foodTwo.foodScore()
+    
+      pacOne.position += keyCodePac[event.keyCode] // move pac
 
-  //       pacOne.position += keyCodePac[event.keyCode] // move pac
+      addClassStyle(pacOne.position, pacOne.eatStyle)
+      pacOne.pacRotate(pacOne.position, (event.keyCode - 39) * 90)
 
-  //       // ! rotate pac
-  //       const rotateDeg = (event.keyCode - 39) * 90
-  //       pacOneEatingAnim.transform = `${rotateDeg}deg` //! ? 
 
-  //       addClassStyle(pacOne.position, pacOneEatingAnim)
-
-  //       if (ghZero.position === pacOne.position) ghZero.position = (height / 2 - 1) * width + (width / 2 - 1)
-  //       if (ghOne.position === pacOne.position) ghOne.position = (height / 2 - 1) * width + width / 2
-  //       if (ghTwo.position === pacOne.position) ghTwo.position = (height / 2) * width + (width / 2 - 1)
-  //       if (ghThree.position === pacOne.position) ghThree.position = (height / 2) * width + width / 2
-  //     } else console.log('invalid input')
-  //   }
-  // }
-  // document.addEventListener('keyup', playGameHighScoreMode)
-
+      if (ghZero.position === pacOne.position) ghZero.position = (height / 2 - 1) * width + (width / 2 - 1)
+      if (ghOne.position === pacOne.position) ghOne.position = (height / 2 - 1) * width + width / 2
+      if (ghTwo.position === pacOne.position) ghTwo.position = (height / 2) * width + (width / 2 - 1)
+      if (ghThree.position === pacOne.position) ghThree.position = (height / 2) * width + width / 2
+    } else console.log('invalid input')
+    
+  }
+  if (foodSp.foodScore()) {
+    clearTimeout(normalMode)
+    document.addEventListener('keyup', playGameHighScoreMode)
+  }
 
   reset.addEventListener('click', resetGame)
 }

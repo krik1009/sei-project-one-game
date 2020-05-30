@@ -167,7 +167,7 @@ button#mute {
   background-image: url('../assets/foodsp.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 40%;
+  background-size: 100%;
   cursor: pointer;
 }
 
@@ -177,35 +177,35 @@ button#mute {
   background-image: url('../assets/gh0red.gif');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 80%;
   cursor: pointer;
 }
 .gh1 {
   background-image: url('../assets/gh1green.gif');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 80%;
   cursor: pointer;
 }
 .gh2 {
   background-image: url('../assets/gh2yellow.gif');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 80%;
   cursor: pointer;
 }
 .gh3 {
   background-image: url('../assets/gh3pink.gif');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 80%;
   cursor: pointer;
 }
 .ghsp {
   background-image: url('../assets/gh-high-score.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 80%;
   cursor: pointer;
 }
 
@@ -242,7 +242,7 @@ button#mute {
   background-image: url('../assets/pac1start.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 80%;
   cursor: pointer;
 }
 .pac1-eat {
@@ -250,7 +250,7 @@ button#mute {
   background-image: url('../assets/pac1eating.gif');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 80%;
   cursor: pointer;
   /* animation: pac1-eat .3s linear 1s infinite alternate; */
   /* transform: rotate(180deg); */
@@ -269,7 +269,7 @@ button#mute {
   background-image: url('../assets/pachighscore.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 80%;
   cursor: pointer;
   /* animation: pac1-highscore .3s linear 1s infinite alternate; */
 }
